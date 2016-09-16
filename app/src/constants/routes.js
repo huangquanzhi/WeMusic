@@ -1,0 +1,1 @@
+export const ROUTES_SET_PAGE = 'ROUTES_SET_PAGE';
