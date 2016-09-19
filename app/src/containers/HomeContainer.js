@@ -10,12 +10,12 @@ class HomeContainer extends Component {
   constructor(props) {
     super(props);
   }
-
+ 
   render() {
     return (
       <main>
-        <h3>qwe</h3>
         <h1>Hello 2</h1>
+        <p>Hello</p>
       </main>
     )
   }
