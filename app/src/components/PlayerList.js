@@ -61,7 +61,6 @@ class Player extends Component {
 
     handleSongClick(value) {
         const {onSongClick} = this.props;
-        console.log("Clicked");
         onSongClick(value);
     }
 

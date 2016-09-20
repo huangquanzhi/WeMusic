@@ -17,6 +17,7 @@ const propTypes = {
     onNext: PropTypes.func,
     onPrev: PropTypes.func,
     onPlay: PropTypes.func,
+    mode: PropTypes.string,
     isPlaying: PropTypes.bool,
 };
 
@@ -24,6 +25,7 @@ class Player extends Component {
     constructor(props) {
         super(props);
         this.retrieveAudioElement = this.retrieveAudioElement.bind(this);
+        this.resetPlayerTimeDuration = this.resetPlayerTimeDuration.bind(this);
         this.handleLoadMeta = this.handleLoadMeta.bind(this);
         this.handleTimeUpdate = this.handleTimeUpdate.bind(this);
         this.handleSetTime = this.handleSetTime.bind(this);
@@ -63,10 +65,7 @@ class Player extends Component {
         if (autoPlay && prevProps.songPlaying.id !== songPlaying.id) {
             const audioNode = this.retrieveAudioElement();
 
-            this.setState({
-                currentTime: 0,
-                duration: 1,
-            });
+            this.resetPlayerTimeDuration();
 
             audioNode.play();
             onPlay(true);
@@ -75,6 +74,13 @@ class Player extends Component {
 
     retrieveAudioElement() {
         return document.getElementById('audioPlayer');
+    }
+
+    resetPlayerTimeDuration() {
+        this.setState({
+            currentTime: 0,
+            duration: 1,
+        });
     }
 
     handleLoadMeta() {
@@ -104,12 +110,16 @@ class Player extends Component {
     }
 
     handleSongEnded() {
-        const {onNext} = this.props;
-        this.setState({
-            currentTime: 0,
-            duration: 1,
-        });
-        onNext();
+        const {onNext, mode} = this.props;
+        const audioNode = this.retrieveAudioElement();
+        this.resetPlayerTimeDuration();
+
+        // reload the song
+        if (mode == 'repeat') {
+            onNext().reload(audioNode);
+        } else {
+            onNext();
+        }
     }
 
     handleSongPlayClick() {
@@ -126,21 +136,29 @@ class Player extends Component {
     }
 
     handlePlayNextSong() {
-        const {onNext} = this.props;
-        this.setState({
-            currentTime: 0,
-            duration: 1,
-        });
-        onNext();
+        const {onNext, mode} = this.props;
+        const audioNode = this.retrieveAudioElement();
+        this.resetPlayerTimeDuration();
+
+        // reload the song
+        if (mode == 'repeat') {
+            onNext().reload(audioNode);
+        } else {
+            onNext();
+        }
     }
 
     handlePlayPrevSong() {
         const {onPrev} = this.props;
-        this.setState({
-            currentTime: 0,
-            duration: 1,
-        });
-        onPrev();
+        const audioNode = this.retrieveAudioElement();
+        this.resetPlayerTimeDuration();
+
+        // reload the song
+        if (mode == 'repeat') {
+            onPrev().reload(audioNode);
+        } else {
+            onPrev();
+        }
     }
 
     handleOnPlayListSongClick(id) {
