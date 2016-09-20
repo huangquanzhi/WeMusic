@@ -54,11 +54,12 @@ class SongContainer extends Component {
     }
 
     render() {
-        const {song} = this.props;
+        const {song, songActions} = this.props;
         return (
             <div className="player">
                 <Player
                     autoPlay={true}
+                    changeSong={songActions.changeSong}
                     songs={song.songList}
                     songPlaying={this.retrievePlayingSong()}
                     onNext={this.handleSongChangeNext}

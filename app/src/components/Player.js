@@ -7,9 +7,11 @@ import AVNext from 'material-ui/svg-icons/av/skip-next';
 import AVPrev from 'material-ui/svg-icons/av/skip-previous';
 import {SONG_PATH} from '../constants/application';
 
+import PlayerList from './PlayerList';
 
 const propTypes = {
     autoPlay: PropTypes.bool,
+    changeSong: PropTypes.func,
     songs: PropTypes.array,
     songPlaying: PropTypes.object,
     onNext: PropTypes.func,
@@ -29,6 +31,7 @@ class Player extends Component {
         this.handleSongEnded = this.handleSongEnded.bind(this);
         this.handlePlayNextSong = this.handlePlayNextSong.bind(this);
         this.handlePlayPrevSong = this.handlePlayPrevSong.bind(this);
+        this.handleOnPlayListSongClick = this.handleOnPlayListSongClick.bind(this);
         this.renderProgressBar = this.renderProgressBar.bind(this);
         this.renderSongPlay = this.renderSongPlay.bind(this);
         this.renderSongNext = this.renderSongNext.bind(this);
@@ -140,6 +143,11 @@ class Player extends Component {
         onPrev();
     }
 
+    handleOnPlayListSongClick(id) {
+        const {changeSong} = this.props;
+        changeSong(id);
+    }
+
     renderProgressBar() {
 
         const {currentTime, duration} = this.state;
@@ -201,13 +209,17 @@ class Player extends Component {
     }
 
     render() {
-        const {songPlaying} = this.props;
+        const {songs, songPlaying} = this.props;
         return (
             <div className="player__bar">
-                <h1>Player</h1>
                 { this.renderSongPrev() }
                 { this.renderSongPlay() }
                 { this.renderSongNext() }
+                <PlayerList
+                    songPlaying={songPlaying}
+                    playList={songs}
+                    onSongClick={this.handleOnPlayListSongClick}
+                />
                 { this.renderProgressBar() }
                 <audio
                     id="audioPlayer"
