@@ -23,7 +23,7 @@ class SongContainer extends Component {
 
     componentWillMount() {
         const {songActions} = this.props;
-        songActions.changePlayMode('shuffle');
+        songActions.changePlayMode('repeat');
         songActions.changePlayList();
     }
 

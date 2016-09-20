@@ -59,17 +59,16 @@ class Player extends Component {
     }
 
     componentDidUpdate(prevProps, prevState) {
-        const {autoPlay, onPlay, songPlaying} = this.props;
-
+        const {onPlay, songPlaying, mode} = this.props;
+        const audioNode = this.retrieveAudioElement();
         // new song auto play
-        if (autoPlay && prevProps.songPlaying.id !== songPlaying.id) {
-            const audioNode = this.retrieveAudioElement();
-
+        if (prevProps.songPlaying.id !== songPlaying.id) {
             this.resetPlayerTimeDuration();
 
             audioNode.play();
             onPlay(true);
         }
+
     }
 
     retrieveAudioElement() {
@@ -110,13 +109,15 @@ class Player extends Component {
     }
 
     handleSongEnded() {
-        const {onNext, mode} = this.props;
+        const {onPlay, onNext, mode} = this.props;
         const audioNode = this.retrieveAudioElement();
         this.resetPlayerTimeDuration();
 
         // reload the song
         if (mode == 'repeat') {
             onNext().reload(audioNode);
+            audioNode.play();
+            onPlay(true);
         } else {
             onNext();
         }

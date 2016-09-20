@@ -10,7 +10,7 @@ import {
  loop, repeat, shuffle,
  */
 const initialState = {
-    autoPlay: false,
+    autoPlay: true,
     songPlaying: 0,
     isPlaying: false,
     playMode: 'loop',
