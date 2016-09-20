@@ -1,0 +1,1 @@
+export const SONG_PATH = 'http://localhost:3000/song/';

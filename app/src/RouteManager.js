@@ -1,14 +1,16 @@
 import React, { Component, PropTypes } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import { Router, Route } from 'react-router'
 
 import * as routesActionsCreator from './actions/routes';
 
 import HomeContainer from './containers/HomeContainer';
+import PlayerContainer from './containers/PlayerContainer';
 
 const propTypes = {
-  routes: PropTypes.object.isRequired,
-  routesActions: PropTypes.object.isRequired,
+  history: PropTypes.object,
+  routing: PropTypes.object,
 };
 
 class RouteManager extends Component {
@@ -17,27 +19,12 @@ class RouteManager extends Component {
   }
 
   render() {
-    const { routes } = this.props;
-
-    let page;
-    switch (routes.pageType) {
-      case 'home':
-        page = <HomeContainer/>;
-        break;
-      default:
-        page = (
-          <div>
-            <h2>Error: {routes.pageType}</h2>
-          </div>
-        );
-        break;
-    }
+    const { history } = this.props;
     return (
-      <div>
-        <div className="page-container">
-          {page}
-        </div>
-      </div>
+      <Router history={history}>
+        <Route path="/" component={HomeContainer} />
+        <Route path="/song" component={PlayerContainer}/>
+      </Router>
     )
   }
 }
@@ -45,12 +32,10 @@ class RouteManager extends Component {
 RouteManager.propTypes = propTypes;
 
 const mapStateToProps = state => ({
-  routes: state.routes
+  routing: state.routing
 });
 
-const mapDispatchToProps = dispatch => ({
-  routesActions: bindActionCreators(routesActionsCreator, dispatch)
-});
+const mapDispatchToProps = dispatch => ({});
 
 export default connect(
   mapStateToProps,

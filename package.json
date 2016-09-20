@@ -10,7 +10,7 @@
     "prebuild:prod": "npm run clean:build",
     "build:prod": "webpack --config webpack.prod.config.js --progress --profile --colors --display-error-details --optimize-minimize --optimize-occurence-order --watch",
     "server:dev": "webpack-dev-server --config webpack.dev.config.js --hot --inline --progress --profile --colors --display-error-details --content-base / --history-api-fallback",
-    "start": "npm run server:dev"
+    "start": "node server.js"
   },
   "author": "",
   "license": "ISC",
