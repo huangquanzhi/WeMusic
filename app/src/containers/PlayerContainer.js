@@ -45,11 +45,9 @@ class SongContainer extends Component {
     }
 
     handleRepeatReload(node) {
-        const {song} = this.props;
         if (node) {
             node.load();
-            if (song.autoPlay)
-                node.play();
+            node.play();
         }
     }
 
@@ -88,7 +86,7 @@ class SongContainer extends Component {
                     autoPlay={song.autoPlay}
                     changeSong={songActions.changeSong}
                     songs={song.songList}
-                    songPlaying={this.retrievePlayingSong()}
+                    loadedSong={this.retrievePlayingSong()}
                     onNext={this.handleSongChangeNext}
                     onPrev={this.handleSongChangePrev}
                     onPlay={this.handlePlayPauseAction}

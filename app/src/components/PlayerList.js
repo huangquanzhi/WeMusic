@@ -8,7 +8,7 @@ function wrapState(ComposedComponent) {
     const propTypes = {
         children: PropTypes.node.isRequired,
         onChange: PropTypes.func,
-        value: PropTypes.number,
+        value: PropTypes.string,
     };
 
     class SelectableList extends Component {
@@ -45,7 +45,7 @@ SelectableList = wrapState(SelectableList);
 
 const propTypes = {
     playList: PropTypes.array,
-    songPlaying: PropTypes.object,
+    loadedSong: PropTypes.object,
     mode: PropTypes.string,
     onSongClick: PropTypes.func,
 };
@@ -67,25 +67,29 @@ class Player extends Component {
     renderPlaylistSongs() {
         const {playList} = this.props;
 
-        return playList.map((song, index) => {
-            return (
-                <ListItem
-                    key={"song_" + song.id}
-                    value={song.id}
-                    primaryText={song.file}
-                />
-            )
-        })
+        if (playList.length > 0) {
+            return playList.map((song) => {
+                return (
+                    <ListItem
+                        key={"song_" + song.id}
+                        value={song.id}
+                        primaryText={song.file}
+                    />
+                )
+            })
+        }
     }
 
     render() {
-        const {songPlaying} = this.props;
+        const {loadedSong} = this.props;
+
+        const loadedSongID = loadedSong? loadedSong.id: '';
 
         return (
             <div className="player__list">
                 <SelectableList
                     onChange={this.handleSongClick}
-                    value={songPlaying.id}
+                    value={loadedSongID}
                 >
                     { this.renderPlaylistSongs() }
                 </SelectableList>

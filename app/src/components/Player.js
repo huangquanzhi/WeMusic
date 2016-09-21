@@ -21,7 +21,7 @@ const propTypes = {
     autoPlay: PropTypes.bool,
     changeSong: PropTypes.func,
     songs: PropTypes.array,
-    songPlaying: PropTypes.object,
+    loadedSong: PropTypes.object,
     onNext: PropTypes.func,
     onPrev: PropTypes.func,
     onPlay: PropTypes.func,
@@ -72,11 +72,11 @@ class Player extends Component {
     }
 
     componentDidUpdate(prevProps) {
-        const {onPlay, songPlaying} = this.props;
-        if (songPlaying) {
+        const {onPlay, loadedSong} = this.props;
+        if (loadedSong) {
             const audioNode = this.retrieveAudioElement();
             // new song auto play
-            if (prevProps.songPlaying.id !== songPlaying.id) {
+            if (prevProps.loadedSong !== loadedSong) {
                 this.resetPlayerTimeDuration();
 
                 audioNode.play();
@@ -139,10 +139,10 @@ class Player extends Component {
     }
 
     handleSongPlayClick() {
-        const {isPlaying, onPlay, songPlaying} = this.props;
+        const {isPlaying, onPlay, loadedSong} = this.props;
         const audioNode = this.retrieveAudioElement();
 
-        if (songPlaying) {
+        if (loadedSong) {
             if (isPlaying) {
                 audioNode.pause();
             } else {
@@ -154,8 +154,8 @@ class Player extends Component {
     }
 
     handlePlayNextSong() {
-        const {onNext, songPlaying, mode} = this.props;
-        if (songPlaying) {
+        const {onNext, loadedSong, mode} = this.props;
+        if (loadedSong) {
             const audioNode = this.retrieveAudioElement();
             this.resetPlayerTimeDuration();
             // reload the song
@@ -168,8 +168,8 @@ class Player extends Component {
     }
 
     handlePlayPrevSong() {
-        const {onPrev, songPlaying, mode} = this.props;
-        if (songPlaying) {
+        const {onPrev, loadedSong, mode} = this.props;
+        if (loadedSong) {
             const audioNode = this.retrieveAudioElement();
             this.resetPlayerTimeDuration();
             // reload the song
@@ -294,26 +294,24 @@ class Player extends Component {
     }
 
     renderPlayList() {
-        const {songs, songPlaying} = this.props;
+        const {songs, loadedSong} = this.props;
 
-        if (songPlaying) {
-            return (
-                <PlayerList
-                    songPlaying={songPlaying}
-                    playList={songs}
-                    onSongClick={this.handleOnPlayListSongClick}
-                />
-            )
-        }
+        return (
+            <PlayerList
+                loadedSong={loadedSong}
+                playList={songs}
+                onSongClick={this.handleOnPlayListSongClick}
+            />
+        )
     }
 
     renderAudioPlayer() {
-        const {songPlaying} = this.props;
-        if (songPlaying) {
+        const {loadedSong} = this.props;
+        if (loadedSong) {
             return (
                 <audio
                     id="audioPlayer"
-                    src={SONG_PATH + songPlaying.file}
+                    src={SONG_PATH + loadedSong.file}
                 />
             )
         }

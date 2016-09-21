@@ -12,22 +12,22 @@ import {
  */
 const initialState = {
     autoPlay: false,
-    songPlaying: 0,
+    songPlaying: '',
     isPlaying: false,
     playMode: SONG_PLAY_MODE_LOOP,
     songList: [
         {
-            id: 0,
+            id: 'adele_hello',
             file: 'Adele - Hello/song.mp3',
             meta: '',
         },
         {
-            id: 1,
+            id: 'apink_nonono',
             file: 'MV Apink(에이핑크)NoNoNo/song.mp3',
             meta: '',
         },
         {
-            id: 2,
+            id: 'apink_mymy',
             file: 'MV Apink(에이핑크)My My/song.mp3',
             meta: '',
         }
