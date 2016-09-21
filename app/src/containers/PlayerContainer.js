@@ -19,11 +19,12 @@ class SongContainer extends Component {
         this.handlePlayPauseAction = this.handlePlayPauseAction.bind(this);
         this.handleSongChangeNext = this.handleSongChangeNext.bind(this);
         this.handleSongChangePrev = this.handleSongChangePrev.bind(this);
+        this.handlePlayModeChange = this.handlePlayModeChange.bind(this);
     }
 
     componentWillMount() {
         const {songActions} = this.props;
-        songActions.changePlayMode('repeat');
+        songActions.changePlayMode('loop');
         songActions.changePlayList();
     }
 
@@ -70,6 +71,12 @@ class SongContainer extends Component {
         return {reload: this.handleRepeatReload}
     }
 
+    handlePlayModeChange(value) {
+        const {songActions} = this.props;
+        songActions.changePlayMode(value);
+        songActions.changePlayList();
+    }
+
     render() {
         const {song, songActions} = this.props;
         return (
@@ -82,6 +89,7 @@ class SongContainer extends Component {
                     onNext={this.handleSongChangeNext}
                     onPrev={this.handleSongChangePrev}
                     onPlay={this.handlePlayPauseAction}
+                    onModeChange={this.handlePlayModeChange}
                     mode={song.playMode}
                     isPlaying={song.isPlaying}
                 />

@@ -2,7 +2,8 @@ import {
     SONG_CHANGE_PLAYING,
     SONG_PLAYER_STATUS,
     SONG_CHANGE_PLAY_MODE,
-    SONG_PLAYLIST_CHANGE
+    SONG_PLAYLIST_CHANGE,
+    SONG_PLAY_MODE_LOOP
 } from '../constants/song';
 
 
@@ -10,10 +11,10 @@ import {
  loop, repeat, shuffle,
  */
 const initialState = {
-    autoPlay: true,
+    autoPlay: false,
     songPlaying: 0,
     isPlaying: false,
-    playMode: 'loop',
+    playMode: SONG_PLAY_MODE_LOOP,
     songList: [
         {
             id: 0,

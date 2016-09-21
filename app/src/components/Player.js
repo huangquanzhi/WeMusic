@@ -5,7 +5,15 @@ import AVPlay from 'material-ui/svg-icons/av/play-arrow';
 import AVPause from 'material-ui/svg-icons/av/pause';
 import AVNext from 'material-ui/svg-icons/av/skip-next';
 import AVPrev from 'material-ui/svg-icons/av/skip-previous';
+import AVLoop from 'material-ui/svg-icons/av/loop';
+import AVRepeat from 'material-ui/svg-icons/av/repeat';
+import AVShuffle from 'material-ui/svg-icons/av/shuffle';
 import {SONG_PATH} from '../constants/application';
+import {
+    SONG_PLAY_MODE_LOOP,
+    SONG_PLAY_MODE_REPEAT,
+    SONG_PLAY_MODE_SHUFFLE
+} from '../constants/song';
 
 import PlayerList from './PlayerList';
 
@@ -17,6 +25,7 @@ const propTypes = {
     onNext: PropTypes.func,
     onPrev: PropTypes.func,
     onPlay: PropTypes.func,
+    onModeChange: PropTypes.func,
     mode: PropTypes.string,
     isPlaying: PropTypes.bool,
 };
@@ -34,10 +43,14 @@ class Player extends Component {
         this.handlePlayNextSong = this.handlePlayNextSong.bind(this);
         this.handlePlayPrevSong = this.handlePlayPrevSong.bind(this);
         this.handleOnPlayListSongClick = this.handleOnPlayListSongClick.bind(this);
+        this.handleModeChange = this.handleModeChange.bind(this);
         this.renderProgressBar = this.renderProgressBar.bind(this);
         this.renderSongPlay = this.renderSongPlay.bind(this);
         this.renderSongNext = this.renderSongNext.bind(this);
         this.renderSongPrev = this.renderSongPrev.bind(this);
+        this.renderSongPlayMode = this.renderSongPlayMode.bind(this);
+        this.renderPlayList = this.renderPlayList.bind(this);
+        this.renderAudioPlayer = this.renderAudioPlayer.bind(this);
         this.state = {
             currentTime: 0,
             duration: 1,
@@ -58,15 +71,17 @@ class Player extends Component {
         }
     }
 
-    componentDidUpdate(prevProps, prevState) {
-        const {onPlay, songPlaying, mode} = this.props;
-        const audioNode = this.retrieveAudioElement();
-        // new song auto play
-        if (prevProps.songPlaying.id !== songPlaying.id) {
-            this.resetPlayerTimeDuration();
+    componentDidUpdate(prevProps) {
+        const {onPlay, songPlaying} = this.props;
+        if (songPlaying) {
+            const audioNode = this.retrieveAudioElement();
+            // new song auto play
+            if (prevProps.songPlaying.id !== songPlaying.id) {
+                this.resetPlayerTimeDuration();
 
-            audioNode.play();
-            onPlay(true);
+                audioNode.play();
+                onPlay(true);
+            }
         }
 
     }
@@ -84,7 +99,7 @@ class Player extends Component {
 
     handleLoadMeta() {
         const audioNode = this.retrieveAudioElement();
-        const duration = ~~audioNode.duration + 2;
+        const duration = ~~audioNode.duration + 1;
         this.setState({
             duration
         });
@@ -114,7 +129,7 @@ class Player extends Component {
         this.resetPlayerTimeDuration();
 
         // reload the song
-        if (mode == 'repeat') {
+        if (mode == SONG_PLAY_MODE_LOOP) {
             onNext().reload(audioNode);
             audioNode.play();
             onPlay(true);
@@ -124,41 +139,45 @@ class Player extends Component {
     }
 
     handleSongPlayClick() {
-        const {isPlaying, onPlay} = this.props;
+        const {isPlaying, onPlay, songPlaying} = this.props;
         const audioNode = this.retrieveAudioElement();
 
-        if (isPlaying) {
-            audioNode.pause();
-        } else {
-            audioNode.play();
+        if (songPlaying) {
+            if (isPlaying) {
+                audioNode.pause();
+            } else {
+                audioNode.play();
+            }
+            // toggle play/pause
+            onPlay();
         }
-        // toggle play/pause
-        onPlay();
     }
 
     handlePlayNextSong() {
-        const {onNext, mode} = this.props;
-        const audioNode = this.retrieveAudioElement();
-        this.resetPlayerTimeDuration();
-
-        // reload the song
-        if (mode == 'repeat') {
-            onNext().reload(audioNode);
-        } else {
-            onNext();
+        const {onNext, songPlaying, mode} = this.props;
+        if (songPlaying) {
+            const audioNode = this.retrieveAudioElement();
+            this.resetPlayerTimeDuration();
+            // reload the song
+            if (mode == SONG_PLAY_MODE_LOOP) {
+                onNext().reload(audioNode);
+            } else {
+                onNext();
+            }
         }
     }
 
     handlePlayPrevSong() {
-        const {onPrev} = this.props;
-        const audioNode = this.retrieveAudioElement();
-        this.resetPlayerTimeDuration();
-
-        // reload the song
-        if (mode == 'repeat') {
-            onPrev().reload(audioNode);
-        } else {
-            onPrev();
+        const {onPrev, songPlaying, mode} = this.props;
+        if (songPlaying) {
+            const audioNode = this.retrieveAudioElement();
+            this.resetPlayerTimeDuration();
+            // reload the song
+            if (mode == SONG_PLAY_MODE_LOOP) {
+                onPrev().reload(audioNode);
+            } else {
+                onPrev();
+            }
         }
     }
 
@@ -167,20 +186,43 @@ class Player extends Component {
         changeSong(id);
     }
 
+    handleModeChange() {
+        const {onModeChange, mode} = this.props;
+        let nextMode = SONG_PLAY_MODE_REPEAT;
+        switch (mode) {
+            case SONG_PLAY_MODE_REPEAT:
+                nextMode = SONG_PLAY_MODE_LOOP;
+                break;
+            case SONG_PLAY_MODE_LOOP:
+                nextMode = SONG_PLAY_MODE_SHUFFLE;
+                break;
+            case SONG_PLAY_MODE_SHUFFLE:
+                break;
+        }
+        onModeChange(nextMode);
+    }
+
     renderProgressBar() {
 
         const {currentTime, duration} = this.state;
 
-        let currentMinutes = ~~(currentTime / 60);
-        let currentSeconds = currentTime - currentMinutes * 60;
 
-        let durationMinutes = ~~(duration / 60);
-        let durationSeconds = duration - durationMinutes * 60;
+        const convertToMinutes = (sec) => {
+            var minutes = ~~(sec / 60);
+            var seconds = sec - (minutes * 60);
 
+            if (minutes < 10) {
+                minutes = "0" + minutes;
+            }
+            if (seconds < 10) {
+                seconds = "0" + seconds;
+            }
+            return minutes + ':' + seconds;
+        };
 
         return (
             <div>
-                <label>Current: {currentMinutes}:{currentSeconds}</label>
+                <label>Current: {convertToMinutes(currentTime)}</label>
                 <Slider
                     value={currentTime}
                     min={0}
@@ -188,7 +230,7 @@ class Player extends Component {
                     step={1}
                     onChange={this.handleSetTime}
                 />
-                <label>Duration:{durationMinutes}:{durationSeconds}</label>
+                <label>Duration:{convertToMinutes(duration - 1)}</label>
             </div>
         )
     }
@@ -227,23 +269,71 @@ class Player extends Component {
         )
     }
 
-    render() {
-        const {songs, songPlaying} = this.props;
+    renderSongPlayMode() {
+        const {mode} = this.props;
+
+        let icon;
+        switch (mode) {
+            case SONG_PLAY_MODE_LOOP:
+                icon = <AVLoop/>;
+                break;
+            case SONG_PLAY_MODE_REPEAT:
+                icon = <AVRepeat/>;
+                break;
+            case SONG_PLAY_MODE_SHUFFLE:
+                icon = <AVShuffle/>;
+                break;
+        }
+
         return (
-            <div className="player__bar">
-                { this.renderSongPrev() }
-                { this.renderSongPlay() }
-                { this.renderSongNext() }
+            <IconButton className="button__play-mode" onClick={this.handleModeChange}>
+                {icon}
+            </IconButton>
+        )
+
+    }
+
+    renderPlayList() {
+        const {songs, songPlaying} = this.props;
+
+        if (songPlaying) {
+            return (
                 <PlayerList
                     songPlaying={songPlaying}
                     playList={songs}
                     onSongClick={this.handleOnPlayListSongClick}
                 />
-                { this.renderProgressBar() }
+            )
+        }
+    }
+
+    renderAudioPlayer() {
+        const {songPlaying} = this.props;
+        if (songPlaying) {
+            return (
                 <audio
                     id="audioPlayer"
                     src={SONG_PATH + songPlaying.file}
                 />
+            )
+        }
+        return (
+            <audio
+                id="audioPlayer"
+            />
+        )
+    }
+
+    render() {
+        return (
+            <div className="player__bar">
+                { this.renderSongPrev() }
+                { this.renderSongPlay() }
+                { this.renderSongNext() }
+                { this.renderSongPlayMode() }
+                { this.renderPlayList() }
+                { this.renderProgressBar() }
+                { this.renderAudioPlayer()}
 
             </div>
         )

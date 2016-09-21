@@ -4,7 +4,10 @@ import {
     SONG_CHANGE_PLAYING,
     SONG_PLAYER_STATUS,
     SONG_CHANGE_PLAY_MODE,
-    SONG_PLAYLIST_CHANGE
+    SONG_PLAYLIST_CHANGE,
+    SONG_PLAY_MODE_LOOP,
+    SONG_PLAY_MODE_REPEAT,
+    SONG_PLAY_MODE_SHUFFLE
 } from '../constants/song';
 
 export const changeSong = (songID) => ({
@@ -17,11 +20,11 @@ export const changePlayList = () => {
         const {song} = getState();
 
         switch (song.playMode) {
-            case 'loop':
-                // setting song list with loop mode
+            case SONG_PLAY_MODE_REPEAT:
+                // setting song list with repeat mode
                 dispatch(setPlayList(song.songList));
                 break;
-            case 'repeat':
+            case SONG_PLAY_MODE_LOOP:
                 // set only one song in the play list
 
                 let repeatSongIndex = 0;
@@ -35,7 +38,7 @@ export const changePlayList = () => {
 
                 dispatch(setPlayList([song.songList[repeatSongIndex]]));
                 break;
-            case 'shuffle':
+            case SONG_PLAY_MODE_SHUFFLE:
                 dispatch(setPlayList(_.shuffle(song.songList)));
                 break;
         }
