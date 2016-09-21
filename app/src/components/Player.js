@@ -1,5 +1,6 @@
 import React, {Component, PropTypes} from 'react';
 import Slider from 'material-ui/Slider';
+import Dialog from 'material-ui/Dialog';
 import IconButton from 'material-ui/IconButton';
 import AVPlay from 'material-ui/svg-icons/av/play-arrow';
 import AVPause from 'material-ui/svg-icons/av/pause';
@@ -8,6 +9,7 @@ import AVPrev from 'material-ui/svg-icons/av/skip-previous';
 import AVLoop from 'material-ui/svg-icons/av/loop';
 import AVRepeat from 'material-ui/svg-icons/av/repeat';
 import AVShuffle from 'material-ui/svg-icons/av/shuffle';
+import AVQueueMusic from 'material-ui/svg-icons/av/queue-music';
 import {SONG_PATH} from '../constants/application';
 import {
     SONG_PLAY_MODE_LOOP,
@@ -16,6 +18,36 @@ import {
 } from '../constants/song';
 
 import PlayerList from './PlayerList';
+
+const styles = {
+    smallIcon: {
+        width: 36,
+        height: 36,
+    },
+    mediumIcon: {
+        width: 48,
+        height: 48,
+    },
+    largeIcon: {
+        width: 60,
+        height: 60,
+    },
+    small: {
+        width: 72,
+        height: 72,
+        padding: 16,
+    },
+    medium: {
+        width: 96,
+        height: 96,
+        padding: 24,
+    },
+    large: {
+        width: 120,
+        height: 120,
+        padding: 30,
+    },
+};
 
 const propTypes = {
     autoPlay: PropTypes.bool,
@@ -44,16 +76,19 @@ class Player extends Component {
         this.handlePlayPrevSong = this.handlePlayPrevSong.bind(this);
         this.handleOnPlayListSongClick = this.handleOnPlayListSongClick.bind(this);
         this.handleModeChange = this.handleModeChange.bind(this);
+        this.handleShowPlayListClick = this.handleShowPlayListClick.bind(this);
         this.renderProgressBar = this.renderProgressBar.bind(this);
         this.renderSongPlay = this.renderSongPlay.bind(this);
         this.renderSongNext = this.renderSongNext.bind(this);
         this.renderSongPrev = this.renderSongPrev.bind(this);
         this.renderSongPlayMode = this.renderSongPlayMode.bind(this);
+        this.renderQueueMusic = this.renderQueueMusic.bind(this);
         this.renderPlayList = this.renderPlayList.bind(this);
         this.renderAudioPlayer = this.renderAudioPlayer.bind(this);
         this.state = {
             currentTime: 0,
             duration: 1,
+            showPlayList: false,
         }
 
     }
@@ -202,6 +237,13 @@ class Player extends Component {
         onModeChange(nextMode);
     }
 
+    handleShowPlayListClick(value) {
+        console.log("Playlist")
+        this.setState({
+            showPlayList: !this.state.showPlayList
+        })
+    }
+
     renderProgressBar() {
 
         const {currentTime, duration} = this.state;
@@ -246,33 +288,53 @@ class Player extends Component {
 
         if (isPlaying) {
             return (
-                <IconButton className="button__pause-song" onClick={this.handleSongPlayClick}>
+                <IconButton
+                    className="button__pause-song"
+                    iconStyle={styles.mediumIcon}
+                    style={styles.medium}
+                    onClick={this.handleSongPlayClick}
+                >
                     <AVPause>Pause</AVPause>
                 </IconButton>
             )
         }
 
         return (
-            <IconButton className="button__play-song" onClick={this.handleSongPlayClick}>
+            <IconButton
+                className="button__play-song"
+                iconStyle={styles.mediumIcon}
+                style={styles.medium}
+                onClick={this.handleSongPlayClick}
+            >
                 <AVPlay>Play</AVPlay>
             </IconButton>
-        )
+        );
     }
 
     renderSongNext() {
         return (
-            <IconButton className="button__next-song" onClick={this.handlePlayNextSong}>
+            <IconButton
+                className="button__next-song"
+                iconStyle={styles.mediumIcon}
+                style={styles.medium}
+                onClick={this.handlePlayNextSong}
+            >
                 <AVNext>Next</AVNext>
             </IconButton>
-        )
+        );
     }
 
     renderSongPrev() {
         return (
-            <IconButton className="button__prev-song" onClick={this.handlePlayPrevSong}>
+            <IconButton
+                className="button__prev-song"
+                iconStyle={styles.mediumIcon}
+                style={styles.medium}
+                onClick={this.handlePlayPrevSong}
+            >
                 <AVPrev>Prev</AVPrev>
             </IconButton>
-        )
+        );
     }
 
     renderSongPlayMode() {
@@ -292,22 +354,48 @@ class Player extends Component {
         }
 
         return (
-            <IconButton className="button__play-mode" onClick={this.handleModeChange}>
+            <IconButton
+                className="button__play-mode"
+                iconStyle={styles.mediumIcon}
+                style={styles.medium}
+                onClick={this.handleModeChange}
+            >
                 {icon}
             </IconButton>
-        )
+        );
 
+    }
+
+    renderQueueMusic() {
+        return (
+            <IconButton
+                className="button__queue-music"
+                iconStyle={styles.mediumIcon}
+                style={styles.medium}
+                onClick={this.handleShowPlayListClick}
+            >
+                <AVQueueMusic/>
+            </IconButton>
+        );
     }
 
     renderPlayList() {
         const {songs, loadedSong} = this.props;
 
         return (
-            <PlayerList
-                loadedSong={loadedSong}
-                playList={songs}
-                onSongClick={this.handleOnPlayListSongClick}
-            />
+            <Dialog
+                title="Music List"
+                modal={false}
+                open={this.state.showPlayList}
+                onRequestClose={this.handleShowPlayListClick}
+                autoScrollBodyContent={true}
+            >
+                <PlayerList
+                    loadedSong={loadedSong}
+                    playList={songs}
+                    onSongClick={this.handleOnPlayListSongClick}
+                />
+            </Dialog>
         )
     }
 
@@ -334,6 +422,9 @@ class Player extends Component {
                 { this.renderProgressBar() }
                 { this.renderAudioPlayer()}
                 <div className="player__controls">
+                    <div className="player__controls__play-mode">
+                        { this.renderSongPlayMode() }
+                    </div>
                     <div className="player__controls__prev-song">
                         { this.renderSongPrev() }
                     </div>
@@ -343,10 +434,11 @@ class Player extends Component {
                     <div className="player__controls__next-song">
                         { this.renderSongNext() }
                     </div>
-                    <div className="player__controls__play-mode">
-                        { this.renderSongPlayMode() }
+                    <div className="player__controls__queue-music">
+                        { this.renderQueueMusic()}
                     </div>
                 </div>
+                { this.renderPlayList()}
             </div>
         )
     }

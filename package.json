@@ -31,6 +31,7 @@
     "escape-string-regexp": "^1.0.5",
     "eslint-loader": "^1.5.0",
     "exports-loader": "^0.6.3",
+    "expose": "^0.1.4",
     "extract-text-webpack-plugin": "^1.0.1",
     "fetch": "^1.1.0",
     "file-loader": "^0.9.0",

@@ -1,6 +1,5 @@
 import React, {Component, PropTypes} from 'react';
 import {List, ListItem, MakeSelectable} from 'material-ui/List';
-import Divider from 'material-ui/Divider';
 
 let SelectableList = MakeSelectable(List);
 

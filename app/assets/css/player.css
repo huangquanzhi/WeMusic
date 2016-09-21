@@ -2,6 +2,7 @@
 .player {
     position: fixed;
     width: 100%;
+    left: 0;
     bottom: 0;
 }
 
@@ -10,9 +11,14 @@
     box-shadow: 10px 0 5px #212121;
 }
 
+.player__progress {
+    display: table;
+    width:100%;
+}
+
 .player__controls {
     display: table;
-    width: 80%;
+    width: 100%;
 }
 
 .player__controls__prev-song {
@@ -39,17 +45,28 @@
     width: 20%;
 }
 
+.player__controls__queue-music {
+    display: table-cell;
+    text-align: center;
+    width: 20%;
+}
+
 .player__progress-current-time{
-    display:inline-block;
+    display: table-cell;
+    text-align: right;
+    padding-right:4%;
     width: 15%;
 }
 
 .player__progress-bar {
-    display:inline-block;
+    display: table-cell;
+    margin-top:10%;
     width: 70%;
 }
 
 .player__progress-duration-time {
-    display: inline-block;
+    display: table-cell;
+    text-align: left;
+    padding-left:4%;
     width: 15%;
 }
