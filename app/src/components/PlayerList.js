@@ -81,20 +81,22 @@ class Player extends Component {
     }
 
     render() {
-        const {loadedSong} = this.props;
+        const {loadedSong, playList} = this.props;
 
-        const loadedSongID = loadedSong? loadedSong.id: '';
+        if (playList.length > 0) {
+            const loadedSongID = loadedSong ? loadedSong.id : '';
 
-        return (
-            <div className="player__list">
-                <SelectableList
-                    onChange={this.handleSongClick}
-                    value={loadedSongID}
-                >
-                    { this.renderPlaylistSongs() }
-                </SelectableList>
-            </div>
-        );
+            return (
+                <div className="player__list">
+                    <SelectableList
+                        onChange={this.handleSongClick}
+                        value={loadedSongID}
+                    >
+                        { this.renderPlaylistSongs() }
+                    </SelectableList>
+                </div>
+            );
+        }
     }
 }
 
