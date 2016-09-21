@@ -10,9 +10,9 @@ import {
     SONG_PLAY_MODE_SHUFFLE
 } from '../constants/song';
 
-export const changeSong = (songObject) => ({
+export const changeSong = (songID) => ({
     type: SONG_CHANGE_PLAYING,
-    id: songObject
+    id: songID
 });
 
 export const changePlayList = () => {
@@ -31,7 +31,7 @@ export const changePlayList = () => {
 
                 // searching for song
                 song.songList.map((s, index) => {
-                    if (s.id == s.songPlaying) {
+                    if (s.id == song.songPlaying) {
                         repeatSongIndex = index;
                     }
                 });

@@ -1,8 +1,13 @@
 import React, {Component, PropTypes} from 'react';
+import * as _ from 'lodash';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
+import {withRouter} from 'react-router'
 
-import {SONG_PLAY_MODE_LOOP} from '../constants/song';
+import {
+    SONG_PLAY_MODE_LOOP,
+    SONG_PLAY_MODE_REPEAT
+} from '../constants/song';
 
 import Player from '../components/Player';
 import * as songActionCreator from '../actions/song';
@@ -22,12 +27,26 @@ class SongContainer extends Component {
         this.handleSongChangeNext = this.handleSongChangeNext.bind(this);
         this.handleSongChangePrev = this.handleSongChangePrev.bind(this);
         this.handlePlayModeChange = this.handlePlayModeChange.bind(this);
+        this.handleChangeSong = this.handleChangeSong.bind(this);
     }
 
     componentWillMount() {
-        const {songActions} = this.props;
-        console.log("Song name : " + this.props.params.songName)
-        songActions.changePlayMode(SONG_PLAY_MODE_LOOP);
+        const {song, songActions, params} = this.props;
+
+        let playMode = SONG_PLAY_MODE_REPEAT;
+
+        if (params.songName) {
+            const songFounded = _.find(song.songList, (song) => {
+                return song.id == params.songName;
+            });
+
+            if (songFounded) {
+                playMode = SONG_PLAY_MODE_LOOP;
+                songActions.changeSong(songFounded.id);
+            }
+        }
+
+        songActions.changePlayMode(playMode);
         songActions.changePlayList();
     }
 
@@ -78,13 +97,22 @@ class SongContainer extends Component {
         songActions.changePlayList();
     }
 
+    handleChangeSong(v) {
+        const {router, song, songActions} = this.props;
+        songActions.changeSong(v);
+        // update the list
+        if (song.playMode == SONG_PLAY_MODE_LOOP) {
+            songActions.changePlayList();
+        }
+    }
+
     render() {
-        const {song, songActions} = this.props;
+        const {song} = this.props;
         return (
             <div className="player">
                 <Player
                     autoPlay={song.autoPlay}
-                    changeSong={songActions.changeSong}
+                    changeSong={this.handleChangeSong}
                     songs={song.songList}
                     loadedSong={this.retrievePlayingSong()}
                     onNext={this.handleSongChangeNext}
@@ -114,4 +142,4 @@ function mapDispatchToProps(dispatch) {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(SongContainer);
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(SongContainer));
