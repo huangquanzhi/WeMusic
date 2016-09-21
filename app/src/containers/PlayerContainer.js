@@ -1,8 +1,10 @@
 import React, {Component, PropTypes} from 'react';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
-import Player from '../components/Player';
 
+import {SONG_PLAY_MODE_LOOP} from '../constants/song';
+
+import Player from '../components/Player';
 import * as songActionCreator from '../actions/song';
 
 const propTypes = {
@@ -24,7 +26,8 @@ class SongContainer extends Component {
 
     componentWillMount() {
         const {songActions} = this.props;
-        songActions.changePlayMode('loop');
+        console.log("Song name : " + this.props.params.songName)
+        songActions.changePlayMode(SONG_PLAY_MODE_LOOP);
         songActions.changePlayList();
     }
 

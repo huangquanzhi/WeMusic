@@ -10,9 +10,9 @@ import {
     SONG_PLAY_MODE_SHUFFLE
 } from '../constants/song';
 
-export const changeSong = (songID) => ({
+export const changeSong = (songObject) => ({
     type: SONG_CHANGE_PLAYING,
-    id: songID
+    id: songObject
 });
 
 export const changePlayList = () => {
@@ -30,8 +30,8 @@ export const changePlayList = () => {
                 let repeatSongIndex = 0;
 
                 // searching for song
-                song.songList.map((song, index) => {
-                    if (song.id === song.songPlaying) {
+                song.songList.map((s, index) => {
+                    if (s.id == s.songPlaying) {
                         repeatSongIndex = index;
                     }
                 });
@@ -63,21 +63,21 @@ export const changeNextSong = () => {
         const {song} = getState();
         const playList = song.playList;
         // set default next song if cant find any
-        let nextSongID = song.songPlaying;
+        let nextSong = song.songPlaying;
         // searching for matching id
         playList.map((data, index) => {
             //found playing song
-            if (data.id === song.songPlaying) {
+            if (data.id == song.songPlaying) {
                 if (playList[index + 1] !== undefined) {
                     // next song available
-                    nextSongID = playList[index + 1].id;
+                    nextSong = playList[index + 1].id;
                 } else {
                     // go to the beginning of play list
-                    nextSongID = playList[0].id;
+                    nextSong = playList[0].id;
                 }
             }
         });
-        dispatch(changeSong(nextSongID));
+        dispatch(changeSong(nextSong));
     }
 };
 
@@ -86,20 +86,20 @@ export const changePrevSong = () => {
         const {song} = getState();
         const playList = song.playList;
         // set default prev song if cant find any
-        let nextSongID = song.songPlaying;
+        let nextSong = song.songPlaying;
         // searching for matching id
         playList.map((data, index) => {
             //found playing song
-            if (data.id === song.songPlaying) {
+            if (data.id == song.songPlaying) {
                 if (playList[index - 1] !== undefined) {
                     // next song available
-                    nextSongID = playList[index - 1].id;
+                    nextSong = playList[index - 1].id;
                 } else {
                     // go to the beginning of play list
-                    nextSongID = playList[playList.length - 1].id;
+                    nextSong = playList[playList.length - 1].id;
                 }
             }
         });
-        dispatch(changeSong(nextSongID));
+        dispatch(changeSong(nextSong));
     }
 };
