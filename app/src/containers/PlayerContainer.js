@@ -98,7 +98,7 @@ class SongContainer extends Component {
     }
 
     handleChangeSong(v) {
-        const {router, song, songActions} = this.props;
+        const { song, songActions} = this.props;
         songActions.changeSong(v);
         // update the list
         if (song.playMode == SONG_PLAY_MODE_LOOP) {

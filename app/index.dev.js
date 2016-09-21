@@ -14,7 +14,8 @@ injectTapEventPlugin();
 import 'babel-polyfill';
 import {browserHistory} from 'react-router'
 import {syncHistoryWithStore} from 'react-router-redux'
-
+import './assets/css/player.css';
+import './assets/css/main.css';
 
 const store = configStore();
 const history = syncHistoryWithStore(browserHistory, store);

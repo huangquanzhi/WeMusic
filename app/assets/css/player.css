@@ -1,0 +1,55 @@
+
+.player {
+    position: fixed;
+    width: 100%;
+    bottom: 0;
+}
+
+.player__bar {
+    background-color: #616161;
+    box-shadow: 10px 0 5px #212121;
+}
+
+.player__controls {
+    display: table;
+    width: 80%;
+}
+
+.player__controls__prev-song {
+    display: table-cell;
+    text-align: center;
+    width: 20%;
+}
+
+.player__controls__next-song {
+    display: table-cell;
+    text-align: center;
+    width: 20%;
+}
+
+.player__controls__play-mode {
+    display: table-cell;
+    text-align: center;
+    width: 20%;
+}
+
+.player__controls__play-song {
+    display: table-cell;
+    text-align: center;
+    width: 20%;
+}
+
+.player__progress-current-time{
+    display:inline-block;
+    width: 15%;
+}
+
+.player__progress-bar {
+    display:inline-block;
+    width: 70%;
+}
+
+.player__progress-duration-time {
+    display: inline-block;
+    width: 15%;
+}

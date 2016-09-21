@@ -221,16 +221,22 @@ class Player extends Component {
         };
 
         return (
-            <div>
-                <label>Current: {convertToMinutes(currentTime)}</label>
-                <Slider
-                    value={currentTime}
-                    min={0}
-                    max={duration}
-                    step={1}
-                    onChange={this.handleSetTime}
-                />
-                <label>Duration:{convertToMinutes(duration - 1)}</label>
+            <div className="player__progress">
+                <div className="player__progress-current-time">
+                    <label>Current: {convertToMinutes(currentTime)}</label>
+                </div>
+                <div className="player__progress-bar">
+                    <Slider
+                        value={currentTime}
+                        min={0}
+                        max={duration}
+                        step={1}
+                        onChange={this.handleSetTime}
+                    />
+                </div>
+                <div className="player__progress-duration-time">
+                    <label>Duration:{convertToMinutes(duration - 1)}</label>
+                </div>
             </div>
         )
     }
@@ -325,14 +331,22 @@ class Player extends Component {
     render() {
         return (
             <div className="player__bar">
-                { this.renderSongPrev() }
-                { this.renderSongPlay() }
-                { this.renderSongNext() }
-                { this.renderSongPlayMode() }
-                { this.renderPlayList() }
                 { this.renderProgressBar() }
                 { this.renderAudioPlayer()}
-
+                <div className="player__controls">
+                    <div className="player__controls__prev-song">
+                        { this.renderSongPrev() }
+                    </div>
+                    <div className="player__controls__play-song">
+                        { this.renderSongPlay() }
+                    </div>
+                    <div className="player__controls__next-song">
+                        { this.renderSongNext() }
+                    </div>
+                    <div className="player__controls__play-mode">
+                        { this.renderSongPlayMode() }
+                    </div>
+                </div>
             </div>
         )
     }
