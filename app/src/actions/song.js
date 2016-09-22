@@ -63,7 +63,8 @@ export const changeNextSong = () => {
         const {song} = getState();
         const playList = song.playList;
         // set default next song if cant find any
-        let nextSong = song.songPlaying;
+        let nextSong = playList.length > 0 ?
+            playList[0].id : song.songPlaying;
         // searching for matching id
         playList.map((data, index) => {
             //found playing song
@@ -71,9 +72,6 @@ export const changeNextSong = () => {
                 if (playList[index + 1] !== undefined) {
                     // next song available
                     nextSong = playList[index + 1].id;
-                } else {
-                    // go to the beginning of play list
-                    nextSong = playList[0].id;
                 }
             }
         });
@@ -86,20 +84,19 @@ export const changePrevSong = () => {
         const {song} = getState();
         const playList = song.playList;
         // set default prev song if cant find any
-        let nextSong = song.songPlaying;
+        let prevSong = playList.length > 0 ?
+            playList[playList.length - 1].id : song.songPlaying;
         // searching for matching id
         playList.map((data, index) => {
             //found playing song
             if (data.id == song.songPlaying) {
                 if (playList[index - 1] !== undefined) {
-                    // next song available
-                    nextSong = playList[index - 1].id;
-                } else {
-                    // go to the beginning of play list
-                    nextSong = playList[playList.length - 1].id;
+                    // prev song available
+                    prevSong = playList[index - 1].id;
                 }
+                // end of playlist
             }
         });
-        dispatch(changeSong(nextSong));
+        dispatch(changeSong(prevSong));
     }
 };

@@ -2,6 +2,7 @@ import React, {Component, PropTypes} from 'react';
 import Slider from 'material-ui/Slider';
 import Dialog from 'material-ui/Dialog';
 import IconButton from 'material-ui/IconButton';
+import classNames from 'classnames';
 import AVPlay from 'material-ui/svg-icons/av/play-arrow';
 import AVPause from 'material-ui/svg-icons/av/pause';
 import AVNext from 'material-ui/svg-icons/av/skip-next';
@@ -51,22 +52,16 @@ const styles = {
 
 const propTypes = {
     autoPlay: PropTypes.bool,
-    changeSong: PropTypes.func,
-    songs: PropTypes.array,
-    loadedSong: PropTypes.object,
-    onNext: PropTypes.func,
-    onPrev: PropTypes.func,
-    onPlay: PropTypes.func,
-    onModeChange: PropTypes.func,
-    mode: PropTypes.string,
+    controller: PropTypes.object,
     isPlaying: PropTypes.bool,
+    loadedSong: PropTypes.object,
+    songs: PropTypes.array,
+    mode: PropTypes.string,
 };
 
 class Player extends Component {
     constructor(props) {
         super(props);
-        this.retrieveAudioElement = this.retrieveAudioElement.bind(this);
-        this.resetPlayerTimeDuration = this.resetPlayerTimeDuration.bind(this);
         this.handleLoadMeta = this.handleLoadMeta.bind(this);
         this.handleTimeUpdate = this.handleTimeUpdate.bind(this);
         this.handleSetTime = this.handleSetTime.bind(this);
@@ -74,7 +69,6 @@ class Player extends Component {
         this.handleSongEnded = this.handleSongEnded.bind(this);
         this.handlePlayNextSong = this.handlePlayNextSong.bind(this);
         this.handlePlayPrevSong = this.handlePlayPrevSong.bind(this);
-        this.handleOnPlayListSongClick = this.handleOnPlayListSongClick.bind(this);
         this.handleModeChange = this.handleModeChange.bind(this);
         this.handleShowPlayListClick = this.handleShowPlayListClick.bind(this);
         this.renderProgressBar = this.renderProgressBar.bind(this);
@@ -94,136 +88,125 @@ class Player extends Component {
     }
 
     componentDidMount() {
-        const {autoPlay, onPlay} = this.props;
-        const audioNode = this.retrieveAudioElement();
-        audioNode.addEventListener('loadedmetadata', this.handleLoadMeta, false);
-        audioNode.addEventListener('timeupdate', this.handleTimeUpdate, false);
-        audioNode.addEventListener('ended', this.handleSongEnded, false);
+        const {autoPlay, controller} = this.props;
+        // set the player node
+        controller.setPlayer(document.getElementById('audioPlayer'), (el) => {
+            el.addEventListener('loadedmetadata', this.handleLoadMeta, false);
+            el.addEventListener('timeupdate', this.handleTimeUpdate, false);
+            el.addEventListener('ended', this.handleSongEnded, false);
+        });
 
-        if (autoPlay) {
-            audioNode.play();
-            onPlay(true);
+        if (controller.playerNode !== null && autoPlay) {
+            controller.isPlaying(true);
         }
     }
 
     componentDidUpdate(prevProps) {
-        const {onPlay, loadedSong} = this.props;
+        const {controller, loadedSong} = this.props;
+
+        // if there is song being selected
         if (loadedSong) {
-            const audioNode = this.retrieveAudioElement();
             // new song auto play
             if (prevProps.loadedSong !== loadedSong) {
-                this.resetPlayerTimeDuration();
-
-                audioNode.play();
-                onPlay(true);
+                // reset timer and start playing
+                controller
+                    .isPlaying(true);
             }
         }
 
     }
 
-    retrieveAudioElement() {
-        return document.getElementById('audioPlayer');
-    }
-
-    resetPlayerTimeDuration() {
-        this.setState({
-            currentTime: 0,
-            duration: 1,
-        });
-    }
-
+    // load the audio's properties
     handleLoadMeta() {
-        const audioNode = this.retrieveAudioElement();
-        const duration = ~~audioNode.duration + 1;
+        const {controller} = this.props;
+        // set the player duration
+        controller.duration = ~~controller.playerNode.duration + 2;
         this.setState({
-            duration
+            duration: controller.duration
         });
     }
 
+    // set the displaying time
     handleTimeUpdate(e) {
-        const audioNode = e.currentTarget;
-        const currentTime = ~~audioNode.currentTime;
+        const {controller} = this.props;
+        // set the player duration
+        controller.currentTime = ~~controller.playerNode.currentTime;
         this.setState({
-            currentTime
+            currentTime: controller.currentTime
         });
     }
+
 
     handleSetTime(e, v) {
-        const audioNode = this.retrieveAudioElement();
-        // set the song current time
-        audioNode.currentTime = v;
+        const {controller} = this.props;
 
+        // set the song current time
+        controller.currentTime = v;
+        controller.playerNode.currentTime = v;
         this.setState({
-            currentTime: v
+            currentTime: controller.currentTime
         });
     }
 
     handleSongEnded() {
-        const {onPlay, onNext, mode} = this.props;
-        const audioNode = this.retrieveAudioElement();
-        this.resetPlayerTimeDuration();
+        const {controller} = this.props;
 
-        // reload the song
-        if (mode == SONG_PLAY_MODE_LOOP) {
-            onNext().reload(audioNode);
-            audioNode.play();
-            onPlay(true);
-        } else {
-            onNext();
-        }
+        controller
+            .resetTime()
+            .next()
+            .reload();
+
+        this.setState({
+            currentTime: controller.currentTime,
+            duration: controller.duration
+        })
+
     }
 
     handleSongPlayClick() {
-        const {isPlaying, onPlay, loadedSong} = this.props;
-        const audioNode = this.retrieveAudioElement();
+        const {controller, isPlaying, loadedSong} = this.props;
 
         if (loadedSong) {
-            if (isPlaying) {
-                audioNode.pause();
-            } else {
-                audioNode.play();
-            }
-            // toggle play/pause
-            onPlay();
+            controller.isPlaying(!isPlaying);
         }
     }
 
     handlePlayNextSong() {
-        const {onNext, loadedSong, mode} = this.props;
+        const {controller, loadedSong} = this.props;
         if (loadedSong) {
-            const audioNode = this.retrieveAudioElement();
-            this.resetPlayerTimeDuration();
-            // reload the song
-            if (mode == SONG_PLAY_MODE_LOOP) {
-                onNext().reload(audioNode);
-            } else {
-                onNext();
-            }
+            controller
+                .resetTime()
+                .next()
+                .reload();
+
+            this.setState({
+                currentTime: controller.currentTime,
+                duration: controller.duration
+            })
         }
     }
 
     handlePlayPrevSong() {
-        const {onPrev, loadedSong, mode} = this.props;
+        const {controller, loadedSong} = this.props;
         if (loadedSong) {
-            const audioNode = this.retrieveAudioElement();
-            this.resetPlayerTimeDuration();
-            // reload the song
-            if (mode == SONG_PLAY_MODE_LOOP) {
-                onPrev().reload(audioNode);
-            } else {
-                onPrev();
-            }
+            controller
+                .resetTime()
+                .prev()
+                .reload();
+
+            this.setState({
+                currentTime: controller.currentTime,
+                duration: controller.duration
+            })
         }
     }
 
-    handleOnPlayListSongClick(id) {
-        const {changeSong} = this.props;
-        changeSong(id);
-    }
 
+    // change the player mode - loop repeat shuffle
     handleModeChange() {
-        const {onModeChange, mode} = this.props;
+        const {controller, mode} = this.props;
         let nextMode = SONG_PLAY_MODE_REPEAT;
+
         switch (mode) {
             case SONG_PLAY_MODE_REPEAT:
                 nextMode = SONG_PLAY_MODE_LOOP;
@@ -234,20 +217,20 @@ class Player extends Component {
             case SONG_PLAY_MODE_SHUFFLE:
                 break;
         }
-        onModeChange(nextMode);
+        // change mode
+        controller
+            .mode(nextMode)
+            .updatePlayList();
     }
 
     handleShowPlayListClick(value) {
-        console.log("Playlist")
         this.setState({
             showPlayList: !this.state.showPlayList
         })
     }
 
     renderProgressBar() {
-
         const {currentTime, duration} = this.state;
-
 
         const convertToMinutes = (sec) => {
             var minutes = ~~(sec / 60);
@@ -286,27 +269,20 @@ class Player extends Component {
     renderSongPlay() {
         const {isPlaying} = this.props;
 
-        if (isPlaying) {
-            return (
-                <IconButton
-                    className="button__pause-song"
-                    iconStyle={styles.mediumIcon}
-                    style={styles.medium}
-                    onClick={this.handleSongPlayClick}
-                >
-                    <AVPause>Pause</AVPause>
-                </IconButton>
-            )
-        }
+        const icon = isPlaying ? <AVPause>Pause</AVPause> : <AVPlay>Play</AVPlay>
 
         return (
             <IconButton
-                className="button__play-song"
+                className={classNames({
+                    "button__play-song": isPlaying,
+                    "button__pause-song": !isPlaying
+                })
+                }
                 iconStyle={styles.mediumIcon}
                 style={styles.medium}
                 onClick={this.handleSongPlayClick}
             >
-                <AVPlay>Play</AVPlay>
+                {icon}
             </IconButton>
         );
     }
@@ -380,7 +356,7 @@ class Player extends Component {
     }
 
     renderPlayList() {
-        const {songs, loadedSong} = this.props;
+        const {controller, songs, loadedSong} = this.props;
 
         return (
             <Dialog
@@ -393,7 +369,7 @@ class Player extends Component {
                 <PlayerList
                     loadedSong={loadedSong}
                     playList={songs}
-                    onSongClick={this.handleOnPlayListSongClick}
+                    onSongClick={controller.song}
                 />
             </Dialog>
         )
