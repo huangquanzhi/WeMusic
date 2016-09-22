@@ -139,14 +139,11 @@ export default class SongPlayer {
         return this;
     }
 
-    // reply the current song, status: boolean
-    replay(status, callback) {
+    // reply the current song
+    replay(callback) {
         if (this.playerNode instanceof HTMLElement) {
-            if (typeof status === 'boolean') {
-                this.playerNode.load();
-                this.playerNode.play();
-                console.log("Replay")
-            }
+            this.playerNode.load();
+            this.playerNode.play();
             if (typeof callback === 'function') {
                 callback();
             }

@@ -102,13 +102,13 @@ class Player extends Component {
     }
 
     componentDidUpdate(prevProps) {
-        const {controller, loadedSong} = this.props;
+        const {controller, isPlaying, loadedSong} = this.props;
 
         // if there is song being selected
         if (loadedSong) {
+
             // new song auto play
             if (prevProps.loadedSong !== loadedSong) {
-                // reset timer and start playing
                 controller
                     .isPlaying(true);
             }
@@ -149,12 +149,18 @@ class Player extends Component {
     }
 
     handleSongEnded() {
-        const {controller} = this.props;
+        const {controller, mode} = this.props;
 
-        controller
-            .resetTime()
-            .next()
-            .reload();
+        if (mode === SONG_PLAY_MODE_LOOP) {
+            controller
+                .resetTime()
+                .replay();
+        } else {
+            controller
+                .resetTime()
+                .next()
+                .reload();
+        }
 
         this.setState({
             currentTime: controller.currentTime,
@@ -172,13 +178,18 @@ class Player extends Component {
     }
 
     handlePlayNextSong() {
-        const {controller, loadedSong} = this.props;
+        const {controller, loadedSong, mode} = this.props;
         if (loadedSong) {
-            controller
-                .resetTime()
-                .next()
-                .reload();
-
+            if (mode === SONG_PLAY_MODE_LOOP) {
+                controller
+                    .resetTime()
+                    .replay();
+            } else {
+                controller
+                    .resetTime()
+                    .next()
+                    .reload();
+            }
             this.setState({
                 currentTime: controller.currentTime,
                 duration: controller.duration
@@ -187,13 +198,18 @@ class Player extends Component {
     }
 
     handlePlayPrevSong() {
-        const {controller, loadedSong} = this.props;
+        const {controller, loadedSong, mode} = this.props;
         if (loadedSong) {
-            controller
-                .resetTime()
-                .prev()
-                .reload();
-
+            if (mode === SONG_PLAY_MODE_LOOP) {
+                controller
+                    .resetTime()
+                    .replay();
+            } else {
+                controller
+                    .resetTime()
+                    .prev()
+                    .reload();
+            }
             this.setState({
                 currentTime: controller.currentTime,
                 duration: controller.duration
