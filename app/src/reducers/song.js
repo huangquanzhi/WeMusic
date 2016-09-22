@@ -19,16 +19,19 @@ const initialState = {
         {
             id: 'adele_hello',
             file: 'Adele - Hello/song.mp3',
+            cover: 'Adele - Hello/cover.png',
             meta: '',
         },
         {
             id: 'apink_nonono',
             file: 'MV Apink(에이핑크)NoNoNo/song.mp3',
+            cover: 'MV Apink(에이핑크)NoNoNo/cover.jpg',
             meta: '',
         },
         {
             id: 'apink_mymy',
             file: 'MV Apink(에이핑크)My My/song.mp3',
+            cover: 'MV Apink(에이핑크)My My/cover.jpg',
             meta: '',
         }
     ],
