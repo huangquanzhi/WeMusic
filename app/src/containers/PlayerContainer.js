@@ -11,6 +11,7 @@ import {
 
 import Player from '../components/Player';
 import * as songActionCreator from '../actions/song';
+import SongPlayer from '../actions/player';
 
 const propTypes = {
     song: PropTypes.object,
@@ -22,88 +23,41 @@ class SongContainer extends Component {
     constructor(props) {
         super(props);
         this.retrievePlayingSong = this.retrievePlayingSong.bind(this);
-        this.handleRepeatReload = this.handleRepeatReload.bind(this);
-        this.handlePlayPauseAction = this.handlePlayPauseAction.bind(this);
-        this.handleSongChangeNext = this.handleSongChangeNext.bind(this);
-        this.handleSongChangePrev = this.handleSongChangePrev.bind(this);
-        this.handlePlayModeChange = this.handlePlayModeChange.bind(this);
-        this.handleChangeSong = this.handleChangeSong.bind(this);
+        this.playerController = new SongPlayer(this.props.songActions);
     }
 
     componentWillMount() {
-        const {song, songActions, params} = this.props;
-
+        const {song, params} = this.props;
         let playMode = SONG_PLAY_MODE_REPEAT;
 
-        if (params.songName) {
+        if (params) {
             const songFounded = _.find(song.songList, (song) => {
                 return song.id == params.songName;
             });
 
             if (songFounded) {
                 playMode = SONG_PLAY_MODE_LOOP;
-                songActions.changeSong(songFounded.id);
+                this.playerController.song(songFounded.id);
             }
         }
 
-        songActions.changePlayMode(playMode);
-        songActions.changePlayList();
+        // change play mode and update the play list
+        this.playerController.mode(playMode).updatePlayList();
     }
 
+    // retrieve the the current playing song
+    // return Object
     retrievePlayingSong() {
         const {song} = this.props;
-        let playing = null;
+        let songObject = null;
 
         song.songList.map((data, index)=> {
             if (data.id === song.songPlaying) {
-                playing = song.songList[index];
+                songObject = song.songList[index];
             }
         });
 
-        return playing;
-    }
-
-    handleRepeatReload(node) {
-        if (node) {
-            node.load();
-            node.play();
-        }
-    }
-
-    handlePlayPauseAction(value = null) {
-        const {song, songActions} = this.props;
-        if (value != null) {
-            songActions.isPlaying(value);
-        } else {
-            songActions.isPlaying(!song.isPlaying);
-        }
-    }
-
-    handleSongChangeNext() {
-        const {songActions} = this.props;
-        songActions.changeNextSong();
-        return {reload: this.handleRepeatReload}
-    }
-
-    handleSongChangePrev() {
-        const {songActions} = this.props;
-        songActions.changePrevSong();
-        return {reload: this.handleRepeatReload}
-    }
-
-    handlePlayModeChange(value) {
-        const {songActions} = this.props;
-        songActions.changePlayMode(value);
-        songActions.changePlayList();
-    }
-
-    handleChangeSong(v) {
-        const { song, songActions} = this.props;
-        songActions.changeSong(v);
-        // update the list
-        if (song.playMode == SONG_PLAY_MODE_LOOP) {
-            songActions.changePlayList();
-        }
+        return songObject;
     }
 
     render() {
@@ -112,15 +66,11 @@ class SongContainer extends Component {
             <div className="player">
                 <Player
                     autoPlay={song.autoPlay}
-                    changeSong={this.handleChangeSong}
-                    songs={song.songList}
-                    loadedSong={this.retrievePlayingSong()}
-                    onNext={this.handleSongChangeNext}
-                    onPrev={this.handleSongChangePrev}
-                    onPlay={this.handlePlayPauseAction}
-                    onModeChange={this.handlePlayModeChange}
-                    mode={song.playMode}
                     isPlaying={song.isPlaying}
+                    loadedSong={this.retrievePlayingSong()}
+                    mode={song.playMode}
+                    songs={song.songList}
+                    controller={this.playerController}
                 />
             </div>
         )
