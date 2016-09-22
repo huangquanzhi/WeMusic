@@ -1,8 +1,6 @@
 import React, {Component, PropTypes} from 'react';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
-import * as jQuery from 'jquery';
-
 const propTypes = {};
 
 
@@ -11,10 +9,6 @@ class HomeContainer extends Component {
         super(props);
     }
 
-    componentDidMount() {
-        console.log(jQuery.('.segment-select'));
-
-    }
 
     render() {
         return (
