@@ -10,8 +10,8 @@ import * as applicationCreator from '../actions/application';
 import IconButton from 'material-ui/IconButton';
 import ActionSettings from 'material-ui/svg-icons/action/settings';
 
-
 import Settings from '../components/Settings';
+
 
 const propTypes = {
     application: PropTypes.object,
@@ -23,12 +23,18 @@ class ToolBarContainer extends Component {
     constructor(props) {
         super(props);
         this.handleSettingsRequest = this.handleSettingsRequest.bind(this);
+        this.handleColorPickerRequest = this.handleColorPickerRequest.bind(this);
         this.renderToolbar = this.renderToolbar.bind(this);
     }
 
     handleSettingsRequest() {
         const {application, applicationActions} = this.props;
         applicationActions.isSettingShowing(!application.settings.isOpen);
+    }
+
+    handleColorPickerRequest() {
+        const {application, applicationActions} = this.props;
+        applicationActions.isColorPickerShow(!application.isPickerShow);
     }
 
     renderToolbar() {
@@ -58,6 +64,7 @@ class ToolBarContainer extends Component {
             <div>
                 { this.renderToolbar() }
                 <Settings
+                    {...this.props}
                     isOpen={application.settings.isOpen}
                     onChange={this.handleSettingsRequest}
                 />

@@ -1,5 +1,6 @@
 import {
     APPLICATION_SHOW_SETTINGS,
+    APPLICATION_SHOW_COLOR_PICKER
 } from '../constants/application';
 
 const initialState = {
@@ -10,6 +11,7 @@ const initialState = {
             toolbarColor: '',
         }
     },
+    isPickerShow: false,
 };
 
 const application = (state = initialState, action) => {
@@ -19,6 +21,10 @@ const application = (state = initialState, action) => {
                 settings: Object.assign({}, state.settings, {
                     isOpen: action.status
                 })
+            });
+        case APPLICATION_SHOW_COLOR_PICKER:
+            return Object.assign({}, state, {
+                isPickerShow: action.status
             });
         default:
             return state;
