@@ -6,11 +6,6 @@
     bottom: 0;
 }
 
-.player__bar {
-    background-color: #616161;
-    box-shadow: 10px 0 5px #212121;
-}
-
 .player__progress {
     display: table;
     width:100%;

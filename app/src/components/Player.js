@@ -1,6 +1,8 @@
 import React, {Component, PropTypes} from 'react';
 import Slider from 'material-ui/Slider';
 import Dialog from 'material-ui/Dialog';
+import Paper from 'material-ui/Paper';
+import Badge from 'material-ui/Badge';
 import IconButton from 'material-ui/IconButton';
 import classNames from 'classnames';
 import AVPlay from 'material-ui/svg-icons/av/play-arrow';
@@ -359,15 +361,23 @@ class Player extends Component {
     }
 
     renderQueueMusic() {
+        const {songs} = this.props;
+
         return (
-            <IconButton
-                className="button__queue-music"
-                iconStyle={styles.mediumIcon}
-                style={styles.medium}
-                onClick={this.handleShowPlayListClick}
+            <Badge
+                badgeContent={songs.length}
+                primary={true}
+                badgeStyle={{top: 30, right: 30}}
             >
-                <AVQueueMusic/>
-            </IconButton>
+                <IconButton
+                    className="button__queue-music"
+                    iconStyle={styles.mediumIcon}
+                    style={styles.medium}
+                    onClick={this.handleShowPlayListClick}
+                >
+                    <AVQueueMusic/>
+                </IconButton>
+            </Badge>
         );
     }
 
@@ -410,7 +420,10 @@ class Player extends Component {
 
     render() {
         return (
-            <div className="player__bar">
+            <Paper
+                className="player__bar"
+                zDepth={1}
+            >
                 { this.renderProgressBar() }
                 { this.renderAudioPlayer()}
                 <div className="player__controls">
@@ -431,7 +444,7 @@ class Player extends Component {
                     </div>
                 </div>
                 { this.renderPlayList()}
-            </div>
+            </Paper>
         )
     }
 }
