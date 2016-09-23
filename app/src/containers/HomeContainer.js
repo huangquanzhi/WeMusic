@@ -7,6 +7,7 @@ import {
 } from '../constants/application';
 
 import PlayerContainer from './PlayerContainer';
+import ToolBarContainer from './ToolBarContainer';
 
 const propTypes = {
     song: PropTypes.object,
@@ -51,6 +52,9 @@ class HomeContainer extends Component {
 
         return (
             <main>
+                <div>
+                    <ToolBarContainer/>
+                </div>
                 <div>
                     <h1>{song.songPlaying}</h1>
                 </div>
