@@ -253,7 +253,7 @@ class Player extends Component {
         return (
             <div className="player__progress">
                 <div className="player__progress-current-time">
-                    <label>Current: {convertToMinutes(currentTime)}</label>
+                    <label>{convertToMinutes(currentTime)}</label>
                 </div>
                 <div className="player__progress-bar">
                     <Slider
@@ -265,7 +265,7 @@ class Player extends Component {
                     />
                 </div>
                 <div className="player__progress-duration-time">
-                    <label>Duration:{convertToMinutes(duration - 1)}</label>
+                    <label>{convertToMinutes(duration - 1)}</label>
                 </div>
             </div>
         )
@@ -423,8 +423,6 @@ class Player extends Component {
 
     render() {
         const {settings} = this.props;
-
-        console.log(settings);
         return (
             <Paper
                 className="player__bar"

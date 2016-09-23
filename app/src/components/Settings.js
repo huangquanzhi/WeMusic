@@ -75,7 +75,6 @@ class Settings extends Component {
                         onChangeComplete={this.handleToolbarColorComplete}
                     />
                 </MenuItem>
-                <MenuItem primaryText="Color Color"/>
             </Drawer>
         );
 
