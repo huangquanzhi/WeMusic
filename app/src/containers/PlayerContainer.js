@@ -61,7 +61,7 @@ class SongContainer extends Component {
     }
 
     render() {
-        const {song} = this.props;
+        const {application, song} = this.props;
         return (
             <div className="player">
                 <Player
@@ -70,6 +70,7 @@ class SongContainer extends Component {
                     loadedSong={this.retrievePlayingSong()}
                     mode={song.playMode}
                     songs={song.songList}
+                    settings={application.settings}
                     controller={this.playerController}
                 />
             </div>
@@ -82,6 +83,7 @@ SongContainer.propTypes = propTypes;
 
 function mapStateToProps(state) {
     return {
+        application: state.application,
         song: state.song,
     };
 }

@@ -4,6 +4,8 @@ import FlatButton from 'material-ui/FlatButton';
 import {ChromePicker, SketchPicker, CirclePicker} from 'react-color';
 
 const propTypes = {
+    color: PropTypes.string,
+    onChangeComplete: PropTypes.func,
 };
 
 
@@ -13,11 +15,13 @@ class ColorPicker extends Component {
     }
 
     render() {
-
+        const {color, onChangeComplete} = this.props;
         return (
             <div className="color-picker">
-
-                    <ChromePicker />
+                <ChromePicker
+                    color={color}
+                    onChangeComplete={onChangeComplete}
+                />
             </div>
         );
 

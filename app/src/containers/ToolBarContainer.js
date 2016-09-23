@@ -38,8 +38,12 @@ class ToolBarContainer extends Component {
     }
 
     renderToolbar() {
+        const {application} = this.props;
         return (
-            <Toolbar className="toolbar">
+            <Toolbar
+                className="toolbar"
+                style={{backgroundColor: application.settings.theme.toolbarColor}}
+            >
                 <ToolbarGroup
                     firstChild={true}
                 />

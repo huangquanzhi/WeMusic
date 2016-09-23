@@ -23,9 +23,9 @@ import {
 import PlayerList from './PlayerList';
 
 const styles = {
-    mediumIcon: {
-        width: 48,
-        height: 48,
+    smallIcon: {
+        width: 36,
+        height: 36,
     },
     medium: {
         width: 96,
@@ -44,6 +44,7 @@ const propTypes = {
     isPlaying: PropTypes.bool,
     loadedSong: PropTypes.object,
     songs: PropTypes.array,
+    settings: PropTypes.object,
     mode: PropTypes.string,
 };
 
@@ -282,7 +283,9 @@ class Player extends Component {
                     "button__pause-song": !isPlaying
                 })
                 }
-                iconStyle={styles.mediumIcon}
+                tooltip={!isPlaying ? "Play" : "Pause"}
+                tooltipPosition="top-right"
+                iconStyle={styles.smallIcon}
                 style={styles.medium}
                 onClick={this.handleSongPlayClick}
             >
@@ -295,8 +298,10 @@ class Player extends Component {
         return (
             <IconButton
                 className="button__next-song"
-                iconStyle={styles.mediumIcon}
+                iconStyle={styles.smallIcon}
                 style={styles.medium}
+                tooltip="Next"
+                tooltipPosition="top-right"
                 onClick={this.handlePlayNextSong}
             >
                 <AVNext>Next</AVNext>
@@ -308,8 +313,10 @@ class Player extends Component {
         return (
             <IconButton
                 className="button__prev-song"
-                iconStyle={styles.mediumIcon}
+                iconStyle={styles.smallIcon}
                 style={styles.medium}
+                tooltip="Prev"
+                tooltipPosition="top-right"
                 onClick={this.handlePlayPrevSong}
             >
                 <AVPrev>Prev</AVPrev>
@@ -321,23 +328,30 @@ class Player extends Component {
         const {mode} = this.props;
 
         let icon;
+        let tips = "";
+
         switch (mode) {
             case SONG_PLAY_MODE_LOOP:
                 icon = <AVLoop/>;
+                tips = "Loop";
                 break;
             case SONG_PLAY_MODE_REPEAT:
                 icon = <AVRepeat/>;
+                tips = "Repeat";
                 break;
             case SONG_PLAY_MODE_SHUFFLE:
                 icon = <AVShuffle/>;
+                tips = "Shuffle";
                 break;
         }
 
         return (
             <IconButton
                 className="button__play-mode"
-                iconStyle={styles.mediumIcon}
+                iconStyle={styles.smallIcon}
                 style={styles.medium}
+                tooltip={tips}
+                tooltipPosition="top-right"
                 onClick={this.handleModeChange}
             >
                 {icon}
@@ -357,8 +371,10 @@ class Player extends Component {
             >
                 <IconButton
                     className="button__queue-music"
-                    iconStyle={styles.mediumIcon}
+                    iconStyle={styles.smallIcon}
                     style={styles.medium}
+                    tooltip="Play list"
+                    tooltipPosition="top-right"
                     onClick={this.handleShowPlayListClick}
                 >
                     <AVQueueMusic/>
@@ -406,11 +422,15 @@ class Player extends Component {
     }
 
     render() {
+        const {settings} = this.props;
+
+        console.log(settings);
         return (
             <Paper
                 className="player__bar"
                 zDepth={5}
                 rounded={false}
+                style={{backgroundColor: settings.theme.playerColor}}
             >
                 { this.renderProgressBar() }
                 { this.renderAudioPlayer()}

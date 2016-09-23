@@ -3,8 +3,11 @@ import Drawer from 'material-ui/Drawer';
 import MenuItem from 'material-ui/MenuItem';
 import Divider from 'material-ui/Divider';
 import ColorPicker from '../components/ColorPicker';
+import NavClose from 'material-ui/svg-icons/navigation/close';
 
 const propTypes = {
+    application: PropTypes.object,
+    applicationAction: PropTypes.object,
     isOpen: PropTypes.bool,
     onChange: PropTypes.func,
 };
@@ -14,11 +17,23 @@ class Settings extends Component {
     constructor(props) {
         super(props);
         this.handleColorPickerRequest = this.handleColorPickerRequest.bind(this);
+        this.handleToolbarColorComplete = this.handleToolbarColorComplete.bind(this);
+        this.handlePlayerColorComplete = this.handlePlayerColorComplete.bind(this);
     }
 
-    handleColorPickerRequest(themeSetting, status) {
+    handleColorPickerRequest() {
         const {application, applicationActions} = this.props;
         applicationActions.isColorPickerShow(!application.isPickerShow);
+    }
+
+    handleToolbarColorComplete(color) {
+        const {applicationActions} = this.props;
+        applicationActions.setToolbarColor(color.hex);
+    }
+
+    handlePlayerColorComplete(color) {
+        const {applicationActions} = this.props;
+        applicationActions.setPlayerColor(color.hex);
     }
 
     render() {
@@ -28,11 +43,19 @@ class Settings extends Component {
             <Drawer
                 docked={false}
                 openSecondary={true}
-                width={250}
+                width={280}
                 open={isOpen}
                 onRequestChange={onChange}
             >
-                <MenuItem primaryText="Player Color"/>
+                <MenuItem
+                    onTouchTap={onChange}
+                >
+                    <NavClose style={{
+                        width: 48,
+                        height: 48,
+                        marginLeft: '41%'
+                    }}/>
+                </MenuItem>
                 <MenuItem primaryText="Toolbar Color"/>
                 <MenuItem primaryText="Color Color"/>
                 <Divider/>
@@ -40,9 +63,18 @@ class Settings extends Component {
                 <Divider/>
                 <MenuItem>
                     <p>Player Color</p>
-                    <ColorPicker/>
+                    <ColorPicker
+                        color={application.settings.theme.playerColor}
+                        onChangeComplete={this.handlePlayerColorComplete}
+                    />
                 </MenuItem>
-                <MenuItem primaryText="Toolbar Color"/>
+                <MenuItem>
+                    <p>Toolbar Color</p>
+                    <ColorPicker
+                        color={application.settings.theme.toolbarColor}
+                        onChangeComplete={this.handleToolbarColorComplete}
+                    />
+                </MenuItem>
                 <MenuItem primaryText="Color Color"/>
             </Drawer>
         );
