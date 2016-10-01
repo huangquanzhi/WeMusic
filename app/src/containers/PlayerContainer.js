@@ -19,7 +19,7 @@ const propTypes = {
 };
 
 
-class SongContainer extends Component {
+class PlayerContainer extends Component {
     constructor(props) {
         super(props);
         this.retrievePlayingSong = this.retrievePlayingSong.bind(this);
@@ -78,8 +78,7 @@ class SongContainer extends Component {
     }
 }
 
-SongContainer.propTypes = propTypes;
-
+PlayerContainer.propTypes = propTypes;
 
 function mapStateToProps(state) {
     return {
@@ -94,4 +93,4 @@ function mapDispatchToProps(dispatch) {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(SongContainer));
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(PlayerContainer));
