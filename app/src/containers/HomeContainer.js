@@ -69,22 +69,20 @@ class HomeContainer extends Component {
 
     return (
         <main>
-          <div>
             <ToolBarContainer
                 title={song.songPlaying}
             />
-          </div>
-          <div className="home__album">
-            <div className="home__album__cover">
-              <img src={this.retrieveSongCover()} alt="cover"/>
+          <div className="home__album row">
+            <div className="home__album__cover span-1-of-2">
+              <img
+                  src={this.retrieveSongCover()}
+                  alt="cover"
+              />
             </div>
-            <div className="home__album__details">
-
+            <div className="home__album__details span-1-of-2">
             </div>
           </div>
-          <div>
             <PlayerContainer/>
-          </div>
         </main>
     );
   }
