@@ -6,11 +6,15 @@ import {
     SONG_PATH
 } from '../constants/application';
 
+import AuthService from '../utils/AuthService'
 import PlayerContainer from './PlayerContainer';
 import ToolBarContainer from './ToolBarContainer';
 
+import Login from '../components/Login';
+
 const propTypes = {
     song: PropTypes.object,
+    route: PropTypes.object
 };
 
 
@@ -80,7 +84,7 @@ class HomeContainer extends Component {
     }
 
     render() {
-        const {song} = this.props;
+        const {song, route} = this.props;
 
         return (
             <main>
@@ -88,6 +92,7 @@ class HomeContainer extends Component {
                     title={song.songPlaying}
                 />
                 <div className="container-fluid home__album">
+                    <Login auth={route.auth}/>
                     <div className="col-md-6 home__album__cover">
                         { this.renderCoverImage() }
                     </div>
