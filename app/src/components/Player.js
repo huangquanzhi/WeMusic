@@ -98,6 +98,7 @@ class Player extends Component {
 
             // new song auto play
             if (prevProps.loadedSong !== loadedSong) {
+                console.log("Play new song")
                 controller
                     .isPlaying(true);
             }
@@ -147,10 +148,10 @@ class Player extends Component {
         } else {
             controller
                 .resetTime()
-                .next()
-                .reload();
+                .next();
         }
 
+        console.log("Song Ended")
         this.setState({
             currentTime: controller.currentTime,
             duration: controller.duration
