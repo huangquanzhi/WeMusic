@@ -6,6 +6,10 @@
     bottom: 0;
 }
 
+.player__bar {
+    background: linear-gradient(rgba(0,0,0,0.05),rgba(0,0,0,0.5));
+}
+
 .player__progress {
     display: table;
     width:100%;

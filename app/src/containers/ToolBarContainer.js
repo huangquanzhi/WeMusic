@@ -3,7 +3,7 @@ import * as _ from 'lodash';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import {withRouter} from 'react-router'
-import {Toolbar, ToolbarGroup} from 'material-ui/Toolbar';
+import {Toolbar, ToolbarGroup, ToolbarTitle} from 'material-ui/Toolbar';
 
 import * as applicationCreator from '../actions/application';
 
@@ -14,82 +14,86 @@ import Settings from '../components/Settings';
 
 
 const propTypes = {
-    application: PropTypes.object,
-    applicationActions: PropTypes.object,
+  application: PropTypes.object,
+  applicationActions: PropTypes.object,
+  title: PropTypes.string,
 };
 
 
 class ToolBarContainer extends Component {
-    constructor(props) {
-        super(props);
-        this.handleSettingsRequest = this.handleSettingsRequest.bind(this);
-        this.handleColorPickerRequest = this.handleColorPickerRequest.bind(this);
-        this.renderToolbar = this.renderToolbar.bind(this);
-    }
+  constructor(props) {
+    super(props);
+    this.handleSettingsRequest = this.handleSettingsRequest.bind(this);
+    this.handleColorPickerRequest = this.handleColorPickerRequest.bind(this);
+    this.renderToolbar = this.renderToolbar.bind(this);
+  }
 
-    handleSettingsRequest() {
-        const {application, applicationActions} = this.props;
-        applicationActions.isSettingShowing(!application.settings.isOpen);
-    }
+  handleSettingsRequest() {
+    const {application, applicationActions} = this.props;
+    applicationActions.isSettingShowing(!application.settings.isOpen);
+  }
 
-    handleColorPickerRequest() {
-        const {application, applicationActions} = this.props;
-        applicationActions.isColorPickerShow(!application.isPickerShow);
-    }
+  handleColorPickerRequest() {
+    const {application, applicationActions} = this.props;
+    applicationActions.isColorPickerShow(!application.isPickerShow);
+  }
 
-    renderToolbar() {
-        const {application} = this.props;
-        return (
-            <Toolbar
-                className="toolbar"
-                style={{backgroundColor: application.settings.theme.toolbarColor}}
-            >
-                <ToolbarGroup
-                    firstChild={true}
-                />
-                <ToolbarGroup
-                    lastChild={true}
-                    style={{
+  renderToolbar() {
+    const {application, title} = this.props;
+    return (
+        <Toolbar
+            className="toolbar"
+            style={{backgroundColor: application.settings.theme.toolbarColor}}
+        >
+          <ToolbarGroup
+              firstChild={true}
+          />
+          <ToolbarGroup>
+            <ToolbarTitle text={title}/>
+          </ToolbarGroup>
+          <ToolbarGroup
+              lastChild={true}
+              style={{
                         marginRight: '2%'
                     }}
-                >
-                    <IconButton onClick={this.handleSettingsRequest}>
-                        <ActionSettings/>
-                    </IconButton>
-                </ToolbarGroup>
-            </Toolbar>
-        )
-    }
+          >
+            <IconButton onClick={this.handleSettingsRequest}>
+              <ActionSettings/>
+            </IconButton>
+          </ToolbarGroup>
+        </Toolbar>
+    )
+  }
 
-    render() {
-        const {application} = this.props;
+  render() {
+    const {application} = this.props;
 
-        return (
-            <div>
-                { this.renderToolbar() }
-                <Settings
-                    {...this.props}
-                    isOpen={application.settings.isOpen}
-                    onChange={this.handleSettingsRequest}
-                />
-            </div>
-        )
-    }
+    return (
+        <div>
+          { this.renderToolbar() }
+          <Settings
+              {...this.props}
+              isOpen={application.settings.isOpen}
+              onChange={this.handleSettingsRequest}
+          />
+        </div>
+    )
+  }
 }
 
 ToolBarContainer.propTypes = propTypes;
 
 
 function mapStateToProps(state) {
-    return {
-        application: state.application
-    };
+  return {
+    application: state.application
+  };
 }
 
 function mapDispatchToProps(dispatch) {
-    return {
-        applicationActions: bindActionCreators(applicationCreator, dispatch)
-    }
+  return {
+    applicationActions: bindActionCreators(applicationCreator, dispatch)
+  }
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(ToolBarContainer));
