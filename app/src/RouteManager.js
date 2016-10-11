@@ -35,7 +35,7 @@ class RouteManager extends Component {
         return (
             <Router history={history}>
                 <Route path="/">
-                    <IndexRedirect to="/home"/>
+                    <IndexRedirect to="home"/>
                     <Route path="home" component={HomeContainer} auth={auth}/>
                     <Route path="access_token=:token" onEnter={parseAuthHash}/>
                 </Route>

@@ -89,10 +89,10 @@ class HomeContainer extends Component {
         return (
             <main>
                 <ToolBarContainer
+                    auth={route.auth}
                     title={song.songPlaying}
                 />
                 <div className="container-fluid home__album">
-                    <Login auth={route.auth}/>
                     <div className="col-md-6 home__album__cover">
                         { this.renderCoverImage() }
                     </div>
