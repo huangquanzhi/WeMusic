@@ -10,44 +10,37 @@
     background: linear-gradient(rgba(0,0,0,0.05),rgba(0,0,0,0.5));
 }
 
-.player__progress {
-    display: table;
-    width:100%;
+.button__queue-badge {
+    padding: 0 !important;
 }
 
+/*.player__progress {*/
+    /*display: table;*/
+    /*width:100%;*/
+/*}*/
+
 .player__controls {
-    display: table;
-    width: 100%;
+    text-align: center;
 }
 
 .player__controls__prev-song {
-    display: table-cell;
     text-align: center;
-    width: 20%;
 }
 
 .player__controls__next-song {
-    display: table-cell;
     text-align: center;
-    width: 20%;
 }
 
 .player__controls__play-mode {
-    display: table-cell;
     text-align: center;
-    width: 20%;
 }
 
 .player__controls__play-song {
-    display: table-cell;
     text-align: center;
-    width: 20%;
 }
 
 .player__controls__queue-music {
-    display: table-cell;
     text-align: center;
-    width: 20%;
 }
 
 .player__progress-current-time{

@@ -32,14 +32,10 @@ main {
 .clearfix { zoom: 1; }
 
 .home__album {
-    height: 70%;
-    width: 100%;
+
 }
 
 .home__album__cover {
-    float: left;
-    height: 100%;
-    width: 50%;
 }
 
 .home__album__cover img {
@@ -49,14 +45,4 @@ main {
     margin-left: 50%;
     transform: translate(-50%, -50%);
     -webkit-box-reflect: below 2px -webkit-gradient(linear, left top, left bottom, from(transparent), color-stop(70%, transparent), to(rgba(250, 250, 250, 0.1)));
-}
-
-.home__album__details {
-    float: right;
-}
-
-.home__album__details:after {
-    clear: both;
-    content: "";
-    display: block;
 }
