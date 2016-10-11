@@ -2,11 +2,15 @@ import {EventEmitter} from 'events'
 import Auth0Lock from 'auth0-lock'
 import {isTokenExpired} from './jwtHelper'
 
+const options = {
+    rememberLastLogin: true
+};
+
 export default class AuthService extends EventEmitter {
     constructor(clientId, domain) {
         super();
         // Configure Auth0
-        this.lock = new Auth0Lock(clientId, domain, {});
+        this.lock = new Auth0Lock(clientId, domain, options);
         // Add callback for lock `authenticated` event
         this.lock.on('authenticated', this._doAuthentication.bind(this));
         // binds login functions to keep this context

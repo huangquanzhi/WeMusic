@@ -8,6 +8,7 @@ import NavClose from 'material-ui/svg-icons/navigation/close';
 const propTypes = {
     application: PropTypes.object,
     applicationAction: PropTypes.object,
+    auth: PropTypes.object,
     isOpen: PropTypes.bool,
     onChange: PropTypes.func,
 };
@@ -37,7 +38,7 @@ class Settings extends Component {
     }
 
     render() {
-        const {application, isOpen, onChange} = this.props;
+        const {application, auth, isOpen, onChange} = this.props;
 
         return (
             <Drawer
@@ -56,8 +57,8 @@ class Settings extends Component {
                         marginLeft: '41%'
                     }}/>
                 </MenuItem>
-                <MenuItem primaryText="Toolbar Color"/>
-                <MenuItem primaryText="Color Color"/>
+                <MenuItem primaryText="Login" onClick={auth.login.bind(this)}/>
+                <MenuItem primaryText="Profile"/>
                 <Divider/>
                 <MenuItem primaryText="Themes" disabled/>
                 <Divider/>
