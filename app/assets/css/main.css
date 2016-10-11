@@ -4,17 +4,6 @@
     box-sizing: border-box;
 }
 
-body {
-    background: no-repeat center center fixed;
-    -webkit-background-size: cover;
-    -moz-background-size: cover;
-    -o-background-size: cover;
-    background-size: cover;
-
-    -webkit-transition: background-image 0.5s ease-in-out;
-    transition: background-image 0.5s ease-in-out;
-}
-
 main {
     height: 100vh;
 }
@@ -38,6 +27,14 @@ main {
 }
 
 .home__album {
+    background:linear-gradient(#eb01a5, #d13531) no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+
+    -webkit-transition: background-image 0.5s ease-in-out;
+    transition: background-image 0.5s ease-in-out;
 
 }
 
@@ -47,9 +44,14 @@ main {
 .home__album__cover img {
     margin-top: 25%;
     margin-left: 50%;
-    transition: opacity .25s ease-in-out;
-    -moz-transition: opacity .25s ease-in-out;
-    -webkit-transition: opacity .25s ease-in-out;
+    transition: opacity .25s ease-in-out, zoom .5s;
+    -moz-transition: opacity .25s ease-in-out, zoom .5s;
+    -webkit-transition: opacity .25s ease-in-out, zoom .5s;
+    zoom: 98%;
     transform: scale(0.75, 0.75) translate(-50%, -50%);
     -webkit-box-reflect: below 2px -webkit-gradient(linear, left top, left bottom, from(transparent), color-stop(70%, transparent), to(rgba(250, 250, 250, 0.1)));
+}
+
+.home__album__cover img:hover {
+    zoom: 100%;
 }

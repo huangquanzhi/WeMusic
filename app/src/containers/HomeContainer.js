@@ -31,7 +31,7 @@ class HomeContainer extends Component {
                 const songObj = this.retrievePlayingSong();
                 // get the cover image url
                 const url = SONG_PATH + songObj.cover;
-                // document.getElementsByClassName("home__album__cover")[0].style.backgroundImage = "url('" + url + "')";
+                document.getElementsByClassName("home__album")[0].style.backgroundImage = "url('" + url + "')";
             }
         }
     }
@@ -87,7 +87,7 @@ class HomeContainer extends Component {
                 <ToolBarContainer
                     title={song.songPlaying}
                 />
-                <div className="home__album">
+                <div className="container-fluid home__album">
                     <div className="col-md-6 home__album__cover">
                         { this.renderCoverImage() }
                     </div>
