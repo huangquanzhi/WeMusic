@@ -12,11 +12,13 @@ import injectTapEventPlugin from 'react-tap-event-plugin';
 injectTapEventPlugin();
 
 import 'babel-polyfill';
-import {browserHistory} from 'react-router'
-import {syncHistoryWithStore} from 'react-router-redux'
+import {browserHistory} from 'react-router';
+import {syncHistoryWithStore} from 'react-router-redux';
+import 'expose?$!expose?jQuery!jquery';
+import "bootstrap-webpack";
 import './assets/css/player.css';
 import './assets/css/main.css';
-import './vendors/css/Grid.css';
+
 
 const store = configStore();
 const history = syncHistoryWithStore(browserHistory, store);
