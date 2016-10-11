@@ -7,7 +7,7 @@
 }
 
 .player__bar {
-    background: linear-gradient(rgba(0,0,0,0.05),rgba(0,0,0,0.5));
+    background: linear-gradient(rgba(0, 0, 0, 0.05), rgba(0, 0, 0, 0.5));
 }
 
 .button__queue-badge {
@@ -15,12 +15,12 @@
 }
 
 /*.player__progress {*/
-    /*display: table;*/
-    /*width:100%;*/
+/*display: table;*/
+/*width:100%;*/
 /*}*/
 
 .player__controls {
-    text-align: center;
+    margin: 0 0;
 }
 
 .player__controls__prev-song {
@@ -43,22 +43,21 @@
     text-align: center;
 }
 
-.player__progress-current-time{
-    display: table-cell;
+.player__progress-current-time {
     text-align: right;
-    padding-right:4%;
-    width: 15%;
+}
+
+.player__progress {
+    margin: 0 0;
 }
 
 .player__progress-bar {
-    display: table-cell;
-    margin-top:10%;
-    width: 70%;
+
 }
 
 .player__progress-duration-time {
     display: table-cell;
     text-align: left;
-    padding-left:4%;
+    padding-left: 4%;
     width: 15%;
 }

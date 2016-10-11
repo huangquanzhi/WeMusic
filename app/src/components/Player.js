@@ -252,10 +252,10 @@ class Player extends Component {
 
         return (
             <div className="row player__progress">
-                <div className="col span-1-of-5 player__progress-current-time">
+                <div className="col-xs-2 player__progress-current-time">
                     <label>{convertToMinutes(currentTime)}</label>
                 </div>
-                <div className="col span-3-of-5 player__progress-bar">
+                <div className="col-xs-8 player__progress-bar">
                     <Slider
                         value={currentTime}
                         min={0}
@@ -264,7 +264,7 @@ class Player extends Component {
                         onChange={this.handleSetTime}
                     />
                 </div>
-                <div className="col span-1-of-5 player__progress-duration-time">
+                <div className="col-xs-2 player__progress-duration-time">
                     <label>{convertToMinutes(duration - 1)}</label>
                 </div>
             </div>
@@ -434,19 +434,19 @@ class Player extends Component {
                 { this.renderProgressBar() }
                 { this.renderAudioPlayer()}
                 <div className="row player__controls">
-                    <div className="col span-1-of-5 player__controls__play-mode">
+                    <div className="col-xs-2 player__controls__play-mode">
                         { this.renderSongPlayMode() }
                     </div>
-                    <div className="col span-1-of-5 player__controls__prev-song">
+                    <div className="col-xs-2 player__controls__prev-song">
                         { this.renderSongPrev() }
                     </div>
-                    <div className="col span-1-of-5 player__controls__play-song">
+                    <div className="col-xs-4 player__controls__play-song">
                         { this.renderSongPlay() }
                     </div>
-                    <div className="col span-1-of-5 player__controls__next-song">
+                    <div className="col-xs-2 player__controls__next-song">
                         { this.renderSongNext() }
                     </div>
-                    <div className="col span-1-of-5 player__controls__queue-music">
+                    <div className="col-xs-2 player__controls__queue-music">
                         { this.renderQueueMusic()}
                     </div>
                 </div>

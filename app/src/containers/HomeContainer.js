@@ -19,6 +19,7 @@ class HomeContainer extends Component {
         super(props);
         this.retrievePlayingSong = this.retrievePlayingSong.bind(this);
         this.retrieveSongCover = this.retrieveSongCover.bind(this);
+        this.renderCoverImage = this.renderCoverImage.bind(this);
     }
 
     componentDidUpdate(prevProps) {
@@ -63,6 +64,20 @@ class HomeContainer extends Component {
         return url;
     }
 
+    renderCoverImage() {
+        const {song} = this.props;
+
+        if (song.songPlaying) {
+            return (
+                <img
+                    src={this.retrieveSongCover()}
+                    alt="cover"
+                    width="600"
+                    height="600"
+                />
+            )
+        }
+    }
 
     render() {
         const {song} = this.props;
@@ -72,14 +87,11 @@ class HomeContainer extends Component {
                 <ToolBarContainer
                     title={song.songPlaying}
                 />
-                <div className="home__album row">
-                    <div className="col span-1-of-2 home__album__cover">
-                        <img
-                            src={this.retrieveSongCover()}
-                            alt="cover"
-                        />
+                <div className="home__album">
+                    <div className="col-md-6 home__album__cover">
+                        { this.renderCoverImage() }
                     </div>
-                    <div className="col span-1-of-2 home__album__details">
+                    <div className="col-md-6 home__album__details">
                         <div className="row">
 
                         </div>
