@@ -22,6 +22,8 @@ class UploadDialog extends Component {
         super(props);
         this.handleNextStep = this.handleNextStep.bind(this);
         this.handlePrevStep = this.handlePrevStep.bind(this);
+        this.handleOnDrop = this.handleOnDrop.bind(this);
+        this.renderDropZone = this.renderDropZone.bind(this);
         this.renderStepActions = this.renderStepActions.bind(this);
         this.state = {
             finished: false,
@@ -56,6 +58,32 @@ class UploadDialog extends Component {
         if (stepIndex > 0) {
             this.setState({stepIndex: stepIndex - 1});
         }
+    }
+
+    handleOnDrop(acceptFile) {
+        console.log(acceptFile);
+    }
+
+    renderDropZone() {
+        return (
+            <Dropzone className="file__drop" onDrop={this.handleOnDrop}
+                      accept="audio/ogg,audio/mp3,audio/acc,audio/wav">
+                <div className="file__drop-zone">
+                    <div className="row">
+                        <FileUpload
+                            style={{
+                                width: 120,
+                                height: 120,
+                                padding: 30,
+                            }}
+                        />
+                    </div>
+                    <div className="row">
+                        <h3><b>Upload</b> or <b>Drag</b></h3>
+                    </div>
+                </div>
+            </Dropzone>
+        )
     }
 
     renderStepActions(step) {
@@ -98,22 +126,7 @@ class UploadDialog extends Component {
                     <Step>
                         <StepLabel>Choose a music</StepLabel>
                         <StepContent>
-                            <Dropzone className="file__drop">
-                                <div className="file__drop-zone">
-                                    <div className="row">
-                                        <FileUpload
-                                            style={{
-                                                width: 120,
-                                                height: 120,
-                                                padding: 30,
-                                            }}
-                                        />
-                                    </div>
-                                    <div className="row">
-                                        <h3><b>Upload</b> or <b>Drag</b></h3>
-                                    </div>
-                                </div>
-                            </Dropzone>
+                            { this.renderDropZone()}
                             { this.renderStepActions(0)}
                         </StepContent>
                     </Step>
