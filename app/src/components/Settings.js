@@ -8,6 +8,7 @@ import NavClose from 'material-ui/svg-icons/navigation/close';
 const propTypes = {
     application: PropTypes.object,
     applicationAction: PropTypes.object,
+    auth: PropTypes.object,
     isOpen: PropTypes.bool,
     onChange: PropTypes.func,
 };
@@ -19,6 +20,17 @@ class Settings extends Component {
         this.handleColorPickerRequest = this.handleColorPickerRequest.bind(this);
         this.handleToolbarColorComplete = this.handleToolbarColorComplete.bind(this);
         this.handlePlayerColorComplete = this.handlePlayerColorComplete.bind(this);
+        this.renderLogMenuItem = this.renderLogMenuItem.bind(this);
+
+        this.state = {
+            loggedIn: false,
+        }
+    }
+
+    componentWillMount() {
+        this.setState({
+            loggedIn: this.props.auth.loggedIn()
+        })
     }
 
     handleColorPickerRequest() {
@@ -34,6 +46,26 @@ class Settings extends Component {
     handlePlayerColorComplete(color) {
         const {applicationActions} = this.props;
         applicationActions.setPlayerColor(color.hex);
+    }
+
+    renderLogMenuItem() {
+        const {auth} = this.props;
+
+        const logout = () => {
+            auth.logout();
+            this.setState({
+                loggedIn: false
+            })
+        };
+
+        if (this.state.loggedIn) {
+            return (
+                <MenuItem primaryText="Logout" onClick={logout}/>
+            )
+        }
+        return (
+            <MenuItem primaryText="Login" onClick={auth.login}/>
+        )
     }
 
     render() {
@@ -56,8 +88,8 @@ class Settings extends Component {
                         marginLeft: '41%'
                     }}/>
                 </MenuItem>
-                <MenuItem primaryText="Toolbar Color"/>
-                <MenuItem primaryText="Color Color"/>
+                {this.renderLogMenuItem()}
+                <MenuItem primaryText="Profile"/>
                 <Divider/>
                 <MenuItem primaryText="Themes" disabled/>
                 <Divider/>
