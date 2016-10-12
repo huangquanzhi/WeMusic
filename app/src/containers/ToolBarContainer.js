@@ -55,14 +55,15 @@ class ToolBarContainer extends Component {
         })
     }
 
+    // only render when logged in
     renderLoggedInItems() {
         const {user} = this.props;
         if (user.loggedIn) {
             return (
-                <ToolbarGroup>
+                <div>
                     <FlatButton label="Upload" onClick={this.handleUploadDialogRequest}/>
-                    <ToolbarSeparator />
-                </ToolbarGroup>
+                    <ToolbarSeparator/>
+                </div>
             )
         }
     }
@@ -80,13 +81,13 @@ class ToolBarContainer extends Component {
                 <ToolbarGroup>
                     <ToolbarTitle text={title}/>
                 </ToolbarGroup>
-                { this.renderLoggedInItems() }
                 <ToolbarGroup
                     lastChild={true}
                     style={{
-                        marginRight: '2%'
+                        marginRight: '1%'
                     }}
                 >
+                    { this.renderLoggedInItems() }
                     <IconButton onClick={this.handleSettingsRequest}>
                         <ActionSettings/>
                     </IconButton>
