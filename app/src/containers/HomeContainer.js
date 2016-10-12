@@ -6,17 +6,15 @@ import {
     SONG_PATH
 } from '../constants/application';
 
-import AuthService from '../utils/AuthService'
+import AuthService from '../utils/AuthService';
 import PlayerContainer from './PlayerContainer';
 import ToolBarContainer from './ToolBarContainer';
 
-import Login from '../components/Login';
 
 const propTypes = {
     song: PropTypes.object,
     route: PropTypes.object
 };
-
 
 class HomeContainer extends Component {
     constructor(props) {
@@ -24,6 +22,13 @@ class HomeContainer extends Component {
         this.retrievePlayingSong = this.retrievePlayingSong.bind(this);
         this.retrieveSongCover = this.retrieveSongCover.bind(this);
         this.renderCoverImage = this.renderCoverImage.bind(this);
+    }
+
+    componentWillMount() {
+        const {auth} = this.props.route;
+        if (auth instanceof AuthService && auth != null) {
+
+        }
     }
 
     componentDidUpdate(prevProps) {

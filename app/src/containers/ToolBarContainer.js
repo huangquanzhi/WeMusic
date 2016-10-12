@@ -3,11 +3,12 @@ import * as _ from 'lodash';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import {withRouter} from 'react-router'
-import {Toolbar, ToolbarGroup, ToolbarTitle} from 'material-ui/Toolbar';
+import {Toolbar, ToolbarGroup, ToolbarSeparator, ToolbarTitle} from 'material-ui/Toolbar';
 import AuthService from '../utils/AuthService'
 import * as applicationCreator from '../actions/application';
 
 import IconButton from 'material-ui/IconButton';
+import FlatButton from 'material-ui/FlatButton';
 import ActionSettings from 'material-ui/svg-icons/action/settings';
 
 import Settings from '../components/Settings';
@@ -58,6 +59,8 @@ class ToolBarContainer extends Component {
                         marginRight: '2%'
                     }}
                 >
+                    <FlatButton label="Upload"/>
+                    <ToolbarSeparator />
                     <IconButton onClick={this.handleSettingsRequest}>
                         <ActionSettings/>
                     </IconButton>
