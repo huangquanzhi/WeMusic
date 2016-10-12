@@ -41,16 +41,10 @@ class Settings extends Component {
     }
 
     renderLogMenuItem() {
-        const {auth, user, userActions} = this.props;
-
-        const logout = () => {
-            auth.logout();
-            userActions.isLoggedIn(false);
-        };
-
+        const {auth, user} = this.props;
         if (user.loggedIn) {
             return (
-                <MenuItem primaryText="Logout" onClick={logout}/>
+                <MenuItem primaryText="Logout" onClick={auth.logout}/>
             )
         }
         return (

@@ -14,10 +14,25 @@ export default class AuthService extends EventEmitter {
         // Add callback for lock `authenticated` event
         this.lock.on('authenticated', this._doAuthentication.bind(this));
         // binds login functions to keep this context
-        this.login = this.login.bind(this)
+        this.login = this.login.bind(this);
+        this.setAuthenticatedActions = this.setAuthenticatedActions.bind(this);
+
+        // actions for reducers
+        this.authenticatedActions = {};
+    }
+
+    setAuthenticatedActions(actions) {
+        if (actions != undefined) {
+            this.authenticatedActions = actions;
+        }
     }
 
     _doAuthentication(authResult) {
+        // user logged in and save token
+        this.authenticatedActions.isLoggedIn(true);
+
+        this.authenticatedActions.setIdToken(authResult.idToken);
+
         // Saves the user token
         this.setToken(authResult.idToken);
         // Async loads the user profile data
@@ -25,7 +40,9 @@ export default class AuthService extends EventEmitter {
             if (error) {
                 console.log('Error loading the Profile', error)
             } else {
-                this.setProfile(profile)
+                // save profile in reducer
+                this.authenticatedActions.setProfile(profile);
+                this.setProfile(profile);
             }
         })
     }
@@ -73,6 +90,10 @@ export default class AuthService extends EventEmitter {
     }
 
     logout() {
+        // reset
+        this.authenticatedActions.isLoggedIn(false);
+        this.authenticatedActions.setProfile({});
+        this.authenticatedActions.setIdToken(null);
         // Clear user token and profile data from localStorage
         localStorage.removeItem('id_token');
         localStorage.removeItem('profile');
