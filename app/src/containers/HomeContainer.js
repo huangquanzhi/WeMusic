@@ -13,6 +13,7 @@ import ToolBarContainer from './ToolBarContainer';
 
 const propTypes = {
     song: PropTypes.object,
+    user: PropTypes.object,
     route: PropTypes.object
 };
 
@@ -22,13 +23,6 @@ class HomeContainer extends Component {
         this.retrievePlayingSong = this.retrievePlayingSong.bind(this);
         this.retrieveSongCover = this.retrieveSongCover.bind(this);
         this.renderCoverImage = this.renderCoverImage.bind(this);
-    }
-
-    componentWillMount() {
-        const {auth} = this.props.route;
-        if (auth instanceof AuthService && auth != null) {
-
-        }
     }
 
     componentDidUpdate(prevProps) {
@@ -89,13 +83,14 @@ class HomeContainer extends Component {
     }
 
     render() {
-        const {song, route} = this.props;
+        const {song, route, user} = this.props;
 
         return (
             <main>
                 <ToolBarContainer
                     auth={route.auth}
                     title={song.songPlaying}
+                    user={user}
                 />
                 <div className="container-fluid home__album">
                     <div className="col-md-6 home__album__cover">
@@ -119,6 +114,7 @@ HomeContainer.propTypes = propTypes;
 function mapStateToProps(state) {
     return {
         song: state.song,
+        user: state.user,
     };
 }
 

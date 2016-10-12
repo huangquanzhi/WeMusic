@@ -6,12 +6,14 @@ import {withRouter} from 'react-router'
 import {Toolbar, ToolbarGroup, ToolbarSeparator, ToolbarTitle} from 'material-ui/Toolbar';
 import AuthService from '../utils/AuthService'
 import * as applicationCreator from '../actions/application';
+import * as userCreator from '../actions/user';
 
 import IconButton from 'material-ui/IconButton';
 import FlatButton from 'material-ui/FlatButton';
 import ActionSettings from 'material-ui/svg-icons/action/settings';
 
 import Settings from '../components/Settings';
+import UploadDialog from '../components/UploadDialog';
 
 
 const propTypes = {
@@ -19,6 +21,8 @@ const propTypes = {
     applicationActions: PropTypes.object,
     auth: PropTypes.instanceOf(AuthService),
     title: PropTypes.string,
+    user: PropTypes.object,
+    userActions: PropTypes.object
 };
 
 
@@ -27,7 +31,12 @@ class ToolBarContainer extends Component {
         super(props);
         this.handleSettingsRequest = this.handleSettingsRequest.bind(this);
         this.handleColorPickerRequest = this.handleColorPickerRequest.bind(this);
+        this.handleUploadDialogRequest = this.handleUploadDialogRequest.bind(this);
+        this.renderLoggedInItems = this.renderLoggedInItems.bind(this);
         this.renderToolbar = this.renderToolbar.bind(this);
+        this.state = {
+            showUploadDialog: false,
+        }
     }
 
     handleSettingsRequest() {
@@ -38,6 +47,24 @@ class ToolBarContainer extends Component {
     handleColorPickerRequest() {
         const {application, applicationActions} = this.props;
         applicationActions.isColorPickerShow(!application.isPickerShow);
+    }
+
+    handleUploadDialogRequest() {
+        this.setState({
+            showUploadDialog: !this.state.showUploadDialog
+        })
+    }
+
+    renderLoggedInItems() {
+        const {user} = this.props;
+        if (user.loggedIn) {
+            return (
+                <ToolbarGroup>
+                    <FlatButton label="Upload" onClick={this.handleUploadDialogRequest}/>
+                    <ToolbarSeparator />
+                </ToolbarGroup>
+            )
+        }
     }
 
     renderToolbar() {
@@ -53,14 +80,13 @@ class ToolBarContainer extends Component {
                 <ToolbarGroup>
                     <ToolbarTitle text={title}/>
                 </ToolbarGroup>
+                { this.renderLoggedInItems() }
                 <ToolbarGroup
                     lastChild={true}
                     style={{
                         marginRight: '2%'
                     }}
                 >
-                    <FlatButton label="Upload"/>
-                    <ToolbarSeparator />
                     <IconButton onClick={this.handleSettingsRequest}>
                         <ActionSettings/>
                     </IconButton>
@@ -80,6 +106,7 @@ class ToolBarContainer extends Component {
                     isOpen={application.settings.isOpen}
                     onChange={this.handleSettingsRequest}
                 />
+                <UploadDialog isOpen={this.state.showUploadDialog} onRequest={this.handleUploadDialogRequest}/>
             </div>
         )
     }
@@ -96,7 +123,8 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        applicationActions: bindActionCreators(applicationCreator, dispatch)
+        applicationActions: bindActionCreators(applicationCreator, dispatch),
+        userActions: bindActionCreators(userCreator, dispatch)
     }
 }
 
