@@ -11,7 +11,7 @@ import {
 
 import Player from '../components/Player';
 import * as songActionCreator from '../actions/song';
-import SongPlayer from '../actions/player';
+import SongPlayer from '../utils/player';
 
 const propTypes = {
     song: PropTypes.object,

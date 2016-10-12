@@ -11,6 +11,8 @@ const propTypes = {
     auth: PropTypes.object,
     isOpen: PropTypes.bool,
     onChange: PropTypes.func,
+    user: PropTypes.object,
+    userActions: PropTypes.object,
 };
 
 
@@ -21,16 +23,6 @@ class Settings extends Component {
         this.handleToolbarColorComplete = this.handleToolbarColorComplete.bind(this);
         this.handlePlayerColorComplete = this.handlePlayerColorComplete.bind(this);
         this.renderLogMenuItem = this.renderLogMenuItem.bind(this);
-
-        this.state = {
-            loggedIn: false,
-        }
-    }
-
-    componentWillMount() {
-        this.setState({
-            loggedIn: this.props.auth.loggedIn()
-        })
     }
 
     handleColorPickerRequest() {
@@ -49,18 +41,10 @@ class Settings extends Component {
     }
 
     renderLogMenuItem() {
-        const {auth} = this.props;
-
-        const logout = () => {
-            auth.logout();
-            this.setState({
-                loggedIn: false
-            })
-        };
-
-        if (this.state.loggedIn) {
+        const {auth, user} = this.props;
+        if (user.loggedIn) {
             return (
-                <MenuItem primaryText="Logout" onClick={logout}/>
+                <MenuItem primaryText="Logout" onClick={auth.logout}/>
             )
         }
         return (
