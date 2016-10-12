@@ -65,13 +65,27 @@ main {
     background-color: #c8dadf;
     position: relative;
     padding: 4px 2px;
+    -webkit-transition: background-color .15s linear;
+    -moz-transition: background-color .15s linear;
+    -ms-transition: background-color .15s linear;
+    -o-transition: background-color .15s linear;
+    transition: background-color .15s linear;
+}
+
+.file__drop:hover {
+    background-color: whitesmoke;
 }
 
 .file__drop-zone {
     text-align: center;
-    padding: 100px 20px;
+    padding: 80px 20px;
     outline: 2px dashed #92b0b3;
     outline-offset: -10px;
-    -webkit-transition: outline-offset .15s ease-in-out, background-color .15s linear;
-    transition: outline-offset .15s ease-in-out, background-color .15s linear;
+    -webkit-transition: outline-offset .15s ease-in-out;
+    transition: outline-offset .15s ease-in-out;
+}
+
+.file__drop-zone:hover {
+    cursor: pointer;
+    outline-offset: -15px;
 }

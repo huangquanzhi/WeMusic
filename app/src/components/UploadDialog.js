@@ -47,20 +47,20 @@ class UploadDialog extends Component {
                                         />
                                     </div>
                                     <div className="row">
-                                        <p>Upload or drag</p>
+                                        <h3><b>Upload</b> or <b>Drag</b></h3>
                                     </div>
                                 </div>
                             </Dropzone>
                         </StepContent>
                     </Step>
                     <Step>
-                        <StepLabel>Create an ad group</StepLabel>
+                        <StepLabel>Music Information</StepLabel>
                         <StepContent>
                             <p>An ad group contains one or more ads which target a shared set of keywords.</p>
                         </StepContent>
                     </Step>
                     <Step>
-                        <StepLabel>Create an ad</StepLabel>
+                        <StepLabel>Finish</StepLabel>
                         <StepContent>
                             <p>
                                 Try out different ad text to see what brings in the most customers,
