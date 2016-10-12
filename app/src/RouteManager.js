@@ -25,7 +25,8 @@ class RouteManager extends Component {
 
     componentWillMount() {
         const {userActions} = this.props;
-        auth.setAuthenticatedActions(this.props.userActions);
+        auth.setAuthenticatedActions(userActions);
+        // set auto login when cookie still active
         if (auth.loggedIn()) {
             userActions.isLoggedIn(true);
             userActions.setProfile(auth.getProfile());
