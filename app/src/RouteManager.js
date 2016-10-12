@@ -24,7 +24,13 @@ class RouteManager extends Component {
     }
 
     componentWillMount() {
+        const {userActions} = this.props;
         auth.setAuthenticatedActions(this.props.userActions);
+        if (auth.loggedIn()) {
+            userActions.isLoggedIn(true);
+            userActions.setProfile(auth.getProfile());
+            userActions.setIdToken(auth.getToken());
+        }
     }
 
     render() {
