@@ -78,7 +78,7 @@ main {
 
 .file__drop-zone {
     text-align: center;
-    padding: 80px 20px;
+    padding: 60px 20px;
     outline: 2px dashed #92b0b3;
     outline-offset: -10px;
     -webkit-transition: outline-offset .15s ease-in-out;
