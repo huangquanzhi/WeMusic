@@ -1,7 +1,8 @@
 import {
     FILE_UPLOADING,
     FILE_SET_FILES,
-    FILE_SET_COVERS
+    FILE_SET_COVERS,
+    FILE_ADD_COVER
 } from '../constants/uploads';
 
 export const isFileUploading = (status) => {
@@ -17,5 +18,5 @@ export const setUploadCovers = (covers) => {
 };
 
 export const addUploadCover = (index, cover) => {
-    return {type: FILE_SET_COVERS, index, cover};
+    return {type: FILE_ADD_COVER, index, cover};
 };

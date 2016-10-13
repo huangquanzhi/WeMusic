@@ -18,7 +18,7 @@ class EditFileList extends Component {
     handleCoverUpload(index, image) {
         const {uploadActions} = this.props;
         console.log("Index " + index);
-        console.log("Image " + image);
+        console.log(image);
         uploadActions.addUploadCover(index, image);
     }
 

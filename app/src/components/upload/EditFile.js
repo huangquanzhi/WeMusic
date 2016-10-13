@@ -22,29 +22,39 @@ class EditFile extends Component {
 
     handleOnDrop(file) {
         const {coverUpload} = this.props;
-        coverUpload(file);
+        // only use one image
+        coverUpload(file[0]);
     }
 
     renderDropZoneImage() {
-        const { cover } = this.props;
+        const {cover} = this.props;
+        // render image instead of text when uploaded
+        if (cover !== undefined) {
+            return (
+                <img
+                    src={cover.preview}
+                    width="120"
+                />
+            )
+        }
+
+        return (
+            <ImagePortrait
+                style={{
+                    width: 64,
+                    height: 64,
+                    padding: 12,
+                }}
+            />
+        )
     }
 
     renderImageDropZone() {
-        const {cover} = this.props;
         return (
             <Dropzone className="file__drop" onDrop={this.handleOnDrop}
                       accept="image/*">
                 <div className="file__drop-zone file__drop-zone_small">
-
-                    <div className="row">
-                        <ImagePortrait
-                            style={{
-                                width: 64,
-                                height: 64,
-                                padding: 12,
-                            }}
-                        />
-                    </div>
+                    {this.renderDropZoneImage()}
                 </div>
             </Dropzone>
         )
