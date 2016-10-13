@@ -27,6 +27,7 @@ class UploadDialog extends Component {
     this.handlePrevStep = this.handlePrevStep.bind(this);
     this.handleOnDrop = this.handleOnDrop.bind(this);
     this.renderDropZone = this.renderDropZone.bind(this);
+    this.renderMusicInformation = this.renderMusicInformation.bind(this);
     this.renderStepActions = this.renderStepActions.bind(this);
     this.state = {
       finished: false,
@@ -100,6 +101,15 @@ class UploadDialog extends Component {
     )
   }
 
+  renderMusicInformation() {
+    const { uploads } = this.props;
+    return (
+        <div>
+
+        </div>
+    )
+  }
+
   renderStepActions(step) {
     const {stepIndex} = this.state;
     const { uploads }= this.props;
@@ -149,7 +159,7 @@ class UploadDialog extends Component {
             <Step>
               <StepLabel>Music Information</StepLabel>
               <StepContent>
-                <p>An ad group contains one or more ads which target a shared set of keywords.</p>
+                {this.renderMusicInformation()}
                 { this.renderStepActions(1)}
               </StepContent>
             </Step>
