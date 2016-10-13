@@ -175,6 +175,7 @@ class UploadDialog extends Component {
 
     renderUploadProgess() {
         const {uploads} = this.props;
+
         return (
             <div className="progress">
                 <div

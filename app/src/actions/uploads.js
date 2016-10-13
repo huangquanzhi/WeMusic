@@ -23,8 +23,8 @@ export const setUploadProgress = (value) => {
 export const runUploadQueue = (files) => {
     return (dispatch) => {
         if (files.length > 0) {
-            var formData = new FormData();
-
+            let formData = new FormData();
+            let progress = 0;
             // put all files in queue
             files.map((file, index) => {
                 formData.append('uploads[]', file.data, file.data.name);
@@ -44,7 +44,7 @@ export const runUploadQueue = (files) => {
                 },
                 xhr: () => {
                     // create an XMLHttpRequest
-                    var xhr = new XMLHttpRequest();
+                    let xhr = new XMLHttpRequest();
                     // listen to the 'progress' event
                     xhr.upload.addEventListener('progress', function (evt) {
 
@@ -52,13 +52,19 @@ export const runUploadQueue = (files) => {
                             let percentComplete = evt.loaded / evt.total;
                             percentComplete = parseInt(percentComplete * 100);
                             // update progress bar
-                            dispatch(setUploadProgress(percentComplete));
+                            progress = percentComplete;
+
                         }
                     }, false);
 
                     return xhr;
                 }
             });
+
+            setInterval(() => {
+                dispatch(setUploadProgress(progress));
+            }, 1000);
+
         }
     }
 };
