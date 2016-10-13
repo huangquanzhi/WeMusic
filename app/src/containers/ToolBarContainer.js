@@ -69,7 +69,6 @@ class ToolBarContainer extends Component {
     // when final step reached and finished
     handleUploadDialogFinish() {
         const {uploads, uploadActions} = this.props;
-        console.log("GOGOGO");
         // start upload
         uploadActions.runUploadQueue(uploads.files);
         // close dialog

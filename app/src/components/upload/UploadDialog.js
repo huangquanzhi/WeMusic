@@ -173,8 +173,20 @@ class UploadDialog extends Component {
     }
 
     renderUploadQueue() {
+        const {uploads} = this.props;
         return (
-            <div> 1 %</div>
+            <div className="progress">
+                <div
+                    className="progress-bar progress-bar-striped active"
+                    role="progressbar"
+                    aria-valuenow={uploads.status.progress}
+                    aria-valuemin="0"
+                    aria-valuemax="100"
+                    style={ {width: uploads.status.progress + "%"}}
+                >
+                    {uploads.status.progress} %
+                </div>
+            </div>
         )
     }
 

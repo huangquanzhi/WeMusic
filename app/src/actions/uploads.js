@@ -4,7 +4,8 @@ import {
     FILE_SET_COVERS,
     FILE_ADD_COVER,
     FILE_EDIT_MUSIC_NAME,
-    FILE_EDIT_MUSIC_AUTHOR
+    FILE_EDIT_MUSIC_AUTHOR,
+    FILE_UPLOAD_PROGRESS,
 } from '../constants/uploads';
 
 import {
@@ -13,6 +14,10 @@ import {
 
 export const isFileUploading = (status) => {
     return {type: FILE_UPLOADING, status};
+};
+
+export const setUploadProgress = (value) => {
+    return {type: FILE_UPLOAD_PROGRESS, value};
 };
 
 export const runUploadQueue = (files) => {
@@ -46,7 +51,8 @@ export const runUploadQueue = (files) => {
                         if (evt.lengthComputable) {
                             let percentComplete = evt.loaded / evt.total;
                             percentComplete = parseInt(percentComplete * 100);
-                            console.log(percentComplete + "%");
+                            // update progress bar
+                            dispatch(setUploadProgress(percentComplete));
                         }
                     }, false);
 

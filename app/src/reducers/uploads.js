@@ -5,6 +5,7 @@ import {
     FILE_ADD_COVER,
     FILE_EDIT_MUSIC_NAME,
     FILE_EDIT_MUSIC_AUTHOR,
+    FILE_UPLOAD_PROGRESS,
 } from '../constants/uploads';
 
 
@@ -23,14 +24,25 @@ import {
 
 const initialState = {
     files: [],
-    uploading: false,
+    status: {
+        uploading: false,
+        progress: 0,
+    },
 };
 
 const uploads = (state = initialState, action) => {
     switch (action.type) {
         case FILE_UPLOADING:
             return Object.assign({}, state, {
-                uploading: action.status,
+                status: Object.assign({}, state.status, {
+                    uploading: action.status
+                })
+            });
+        case FILE_UPLOAD_PROGRESS:
+            return Object.assign({}, state, {
+                status: Object.assign({}, state.status, {
+                    progress: action.value
+                })
             });
         case FILE_SET_FILES:
             return Object.assign({}, state, {
