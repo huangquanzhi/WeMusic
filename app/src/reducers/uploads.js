@@ -3,22 +3,23 @@ import {
     FILE_SET_FILES,
     FILE_SET_COVERS,
     FILE_ADD_COVER,
-    FILE_ADD_MUSIC_INFO
+    FILE_EDIT_MUSIC_NAME,
+    FILE_EDIT_MUSIC_AUTHOR,
 } from '../constants/uploads';
 
 
 /*
 
-files: [
-    {
-        data: fileData
-        cover: imageFile
-        name: string
-        author: string
-    }
-]
-
+ files: [
+ {
+ data: fileData
+ cover: imageFile
+ name: string
+ author: string
+ }
+ ]
  */
+
 
 const initialState = {
     files: [],
@@ -41,10 +42,35 @@ const uploads = (state = initialState, action) => {
             });
         case FILE_ADD_COVER:
             return Object.assign({}, state, {
-                covers: [
-                    ...state.covers.slice(0, action.index),
-                    action.cover,
-                    ...state.covers.slice(action.index + 1)
+                files: [
+                    ...state.files.slice(0, action.index),
+                    Object.assign({}, state.files[action.index],
+                        {
+                            cover: action.cover,
+                        }),
+                    ...state.files.slice(action.index + 1)
+                ]
+            });
+        case FILE_EDIT_MUSIC_NAME:
+            return Object.assign({}, state, {
+                files: [
+                    ...state.files.slice(0, action.index),
+                    Object.assign({}, state.files[action.index],
+                        {
+                            name: action.name,
+                        }),
+                    ...state.files.slice(action.index + 1)
+                ]
+            });
+        case FILE_EDIT_MUSIC_AUTHOR:
+            return Object.assign({}, state, {
+                files: [
+                    ...state.files.slice(0, action.index),
+                    Object.assign({}, state.files[action.index],
+                        {
+                            author: action.author,
+                        }),
+                    ...state.files.slice(action.index + 1)
                 ]
             });
         default:

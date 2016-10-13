@@ -3,7 +3,8 @@ import {
     FILE_SET_FILES,
     FILE_SET_COVERS,
     FILE_ADD_COVER,
-    FILE_ADD_MUSIC_INFO
+    FILE_EDIT_MUSIC_NAME,
+    FILE_EDIT_MUSIC_AUTHOR
 } from '../constants/uploads';
 
 export const isFileUploading = (status) => {
@@ -16,7 +17,7 @@ export const setUploadFiles = (files) => {
     let fileArray = [];
 
     // create new object
-    files.map((file, index) => {
+    files.map((file) => {
         fileArray.push({
             data: file,
             cover: null,
@@ -34,4 +35,12 @@ export const setUploadCovers = (covers) => {
 
 export const addUploadCover = (index, cover) => {
     return {type: FILE_ADD_COVER, index, cover};
+};
+
+export const editUploadName = (index, name) => {
+    return {type: FILE_EDIT_MUSIC_NAME, index, name};
+};
+
+export const editUploadAuthor = (index, author) => {
+    return {type: FILE_EDIT_MUSIC_AUTHOR, index, author};
 };

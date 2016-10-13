@@ -7,8 +7,9 @@ import ActionDelete from 'material-ui/svg-icons/action/delete';
 
 const propTypes = {
     file: PropTypes.object,
-    cover: PropTypes.object,
     coverUpload: PropTypes.func,
+    nameEdit: PropTypes.func,
+    authorEdit: PropTypes.func,
 };
 
 
@@ -16,6 +17,8 @@ class EditFile extends Component {
     constructor(props) {
         super(props);
         this.handleOnDrop = this.handleOnDrop.bind(this);
+        this.handleEditName = this.handleEditName.bind(this);
+        this.handleEditAuthor = this.handleEditAuthor.bind(this);
         this.renderDropZoneImage = this.renderDropZoneImage.bind(this);
         this.renderImageDropZone = this.renderImageDropZone.bind(this);
     }
@@ -26,18 +29,27 @@ class EditFile extends Component {
         coverUpload(file[0]);
     }
 
+    handleEditName(e) {
+        const {nameEdit} = this.props;
+        nameEdit(e.target.value);
+    }
+
+    handleEditAuthor(e) {
+        const {authorEdit} = this.props;
+        authorEdit(e.target.value);
+    }
+
     renderDropZoneImage() {
-        const {cover} = this.props;
+        const {file} = this.props;
         // render image instead of text when uploaded
-        if (cover !== undefined) {
+        if (file.cover !== null) {
             return (
                 <img
-                    src={cover.preview}
+                    src={file.cover.preview}
                     width="120"
                 />
             )
         }
-
         return (
             <ImagePortrait
                 style={{
@@ -71,7 +83,7 @@ class EditFile extends Component {
                     <div className="col-md-6 col-md-offset-1">
                         <div className="row">
                             <div className="col-xs-4">
-                                Name: {file.name}
+                                Name: {file.data.name}
                             </div>
                             <div className="col-xs-8">
                                 <IconButton touch={true}>
@@ -81,12 +93,18 @@ class EditFile extends Component {
                         </div>
                         <div className="row">
                             <TextField
-                                hintText="Music Name"
+                                floatingLabelText="Music Name"
+                                floatingLabelFixed={true}
+                                value={file.name}
+                                onChange={this.handleEditName}
                             />
                         </div>
                         <div className="row">
                             <TextField
-                                hintText="Author"
+                                floatingLabelText="Author"
+                                floatingLabelFixed={true}
+                                value={file.author}
+                                onChange={this.handleEditAuthor}
                             />
                         </div>
                     </div>

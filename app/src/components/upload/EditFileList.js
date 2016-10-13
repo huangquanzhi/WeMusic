@@ -11,27 +11,24 @@ const propTypes = {
 class EditFileList extends Component {
     constructor(props) {
         super(props);
-        this.handleCoverUpload = this.handleCoverUpload.bind(this);
         this.renderItemList = this.renderItemList.bind(this);
     }
 
-    handleCoverUpload(index, image) {
-        const {uploadActions} = this.props;
-        console.log("Index " + index);
-        console.log(image);
-        uploadActions.addUploadCover(index, image);
-    }
-
     renderItemList() {
-        const {uploads} = this.props;
+        const {uploads, uploadActions} = this.props;
         return uploads.files.map((file, index) => {
             return (
                 <EditFile
                     key={"edit-file-item-" + index}
                     file={file}
-                    cover={uploads.covers[index]}
                     coverUpload={(image) => {
-                        this.handleCoverUpload(index, image);
+                        uploadActions.addUploadCover(index, image);
+                    }}
+                    nameEdit={(name) => {
+                        uploadActions.editUploadName(index, name);
+                    }}
+                    authorEdit={(author) => {
+                        uploadActions.editUploadAuthor(index, author);
                     }}
                 />
             )
