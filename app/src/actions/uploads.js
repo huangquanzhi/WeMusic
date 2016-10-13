@@ -7,45 +7,53 @@ import {
     FILE_EDIT_MUSIC_AUTHOR
 } from '../constants/uploads';
 
+import {
+    UPLOAD_END_POINT
+} from '../constants/application';
+
 export const isFileUploading = (status) => {
     return {type: FILE_UPLOADING, status};
 };
 
 export const runUploadQueue = (files) => {
+    return (dispatch) => {
+        if (files.length > 0) {
+            var formData = new FormData();
 
-    if (files.length > 0) {
-        var formData = new FormData();
+            // put all files in queue
+            files.map((file, index) => {
+                formData.append('uploads[]', file.data, file.data.name);
+            });
 
-        // put all files in queue
-        files.map((file, index) => {
-            formData.append('uploads[]', file.data, file.data.name);
-        })
+            // start the upload
+            dispatch(isFileUploading(true));
 
-        $.ajax({
-            url: '/',
-            type: 'POST',
-            data: formData,
-            processData: false,
-            contentType: false,
-            success: (data) => {
-                console.log('upload successful!');
-            },
-            xhr: () => {
-                // create an XMLHttpRequest
-                var xhr = new XMLHttpRequest();
-                // listen to the 'progress' event
-                xhr.upload.addEventListener('progress', function (evt) {
+            $.ajax({
+                url: UPLOAD_END_POINT,
+                type: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: (data) => {
+                    dispatch(isFileUploading(false));
+                },
+                xhr: () => {
+                    // create an XMLHttpRequest
+                    var xhr = new XMLHttpRequest();
+                    // listen to the 'progress' event
+                    xhr.upload.addEventListener('progress', function (evt) {
 
-                    if (evt.lengthComputable) {
-                        let percentComplete = evt.loaded / evt.total;
-                        percentComplete = parseInt(percentComplete * 100);
-                        console.log(percentComplete + "%");
-                    }
-                }, false);
+                        if (evt.lengthComputable) {
+                            let percentComplete = evt.loaded / evt.total;
+                            percentComplete = parseInt(percentComplete * 100);
+                            console.log(percentComplete + "%");
+                        }
+                    }, false);
 
-                return xhr;
-            }
-        });
+                    return xhr;
+                }
+            });
+        }
     }
 };
 

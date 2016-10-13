@@ -68,8 +68,12 @@ class ToolBarContainer extends Component {
 
     // when final step reached and finished
     handleUploadDialogFinish() {
-        const {uploadActions} = this.props;
-        uploadActions.isFileUploading(true);
+        const {uploads, uploadActions} = this.props;
+        console.log("GOGOGO");
+        // start upload
+        uploadActions.runUploadQueue(uploads.files);
+        // close dialog
+        this.handleUploadDialogRequest();
     }
 
     // only render when logged in

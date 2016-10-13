@@ -42,7 +42,7 @@ class UploadDialog extends Component {
 
     handleNextStep() {
         const {stepIndex} = this.state;
-        const {uploads, onFinish, onRequest} = this.props;
+        const {uploads, onFinish} = this.props;
         // if final step
         if (stepIndex >= 2) {
             this.setState({
@@ -52,8 +52,6 @@ class UploadDialog extends Component {
 
             // on finish clicked
             onFinish();
-            // close dialog
-            onRequest(true);
         } else {
             // not final step yet
 
