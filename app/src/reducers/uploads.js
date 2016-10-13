@@ -2,14 +2,26 @@ import {
     FILE_UPLOADING,
     FILE_SET_FILES,
     FILE_SET_COVERS,
-    FILE_ADD_COVER
+    FILE_ADD_COVER,
+    FILE_ADD_MUSIC_INFO
 } from '../constants/uploads';
 
 
+/*
+
+files: [
+    {
+        data: fileData
+        cover: imageFile
+        name: string
+        author: string
+    }
+]
+
+ */
+
 const initialState = {
     files: [],
-    musicInfo: [],
-    covers: [],
     uploading: false,
 };
 

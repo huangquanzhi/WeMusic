@@ -2,7 +2,8 @@ import {
     FILE_UPLOADING,
     FILE_SET_FILES,
     FILE_SET_COVERS,
-    FILE_ADD_COVER
+    FILE_ADD_COVER,
+    FILE_ADD_MUSIC_INFO
 } from '../constants/uploads';
 
 export const isFileUploading = (status) => {
@@ -10,7 +11,21 @@ export const isFileUploading = (status) => {
 };
 
 export const setUploadFiles = (files) => {
-    return {type: FILE_SET_FILES, files};
+    // split files and create object
+
+    let fileArray = [];
+
+    // create new object
+    files.map((file, index) => {
+        fileArray.push({
+            data: file,
+            cover: null,
+            name: '',
+            author: ''
+        })
+    });
+
+    return {type: FILE_SET_FILES, files: fileArray};
 };
 
 export const setUploadCovers = (covers) => {
