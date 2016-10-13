@@ -78,14 +78,23 @@ main {
 
 .file__drop-zone {
     text-align: center;
-    padding: 60px 20px;
     outline: 2px dashed #92b0b3;
-    outline-offset: -10px;
+
     -webkit-transition: outline-offset .15s ease-in-out;
     transition: outline-offset .15s ease-in-out;
 }
 
 .file__drop-zone:hover {
     cursor: pointer;
-    outline-offset: -15px;
+    outline-offset: -13px;
+}
+
+.file__drop-zone_small {
+    padding: 5px 5px;
+    outline-offset: -5px;
+}
+
+.file__drop-zone_large {
+    padding: 60px 20px;
+    outline-offset: -10px;
 }

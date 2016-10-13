@@ -12,12 +12,15 @@ import FlatButton from 'material-ui/FlatButton';
 import FileUpload from 'material-ui/svg-icons/file/file-upload';
 import Dropzone from 'react-dropzone';
 
+import EditFileList from './EditFileList';
+
 const propTypes = {
     onRequest: PropTypes.func,
     onDrop: PropTypes.func,
     onFinish: PropTypes.func,
     isOpen: PropTypes.bool,
     uploads: PropTypes.object,
+    uploadActions: PropTypes.object,
 };
 
 class UploadDialog extends Component {
@@ -80,7 +83,7 @@ class UploadDialog extends Component {
         return (
             <Dropzone className="file__drop" onDrop={this.handleOnDrop}
                       accept="audio/ogg,audio/mp3,audio/acc,audio/wav">
-                <div className="file__drop-zone">
+                <div className="file__drop-zone file__drop-zone_large">
                     <div className="row">
                         <FileUpload
                             style={{
@@ -102,11 +105,9 @@ class UploadDialog extends Component {
     }
 
     renderMusicInformation() {
-        const {uploads} = this.props;
+        const {uploads, uploadActions} = this.props;
         return (
-            <div>
-
-            </div>
+            <EditFileList uploads={uploads} uploadActions={uploadActions}/>
         )
     }
 
