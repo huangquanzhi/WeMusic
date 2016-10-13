@@ -8,6 +8,7 @@ import {
 
 const initialState = {
     files: [],
+    musicInfo: [],
     covers: [],
     uploading: false,
 };

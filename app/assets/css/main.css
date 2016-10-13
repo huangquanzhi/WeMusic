@@ -90,7 +90,7 @@ main {
 }
 
 .file__drop-zone_small {
-    padding: 5px 5px;
+    padding: 10px 5px;
     outline-offset: -5px;
 }
 

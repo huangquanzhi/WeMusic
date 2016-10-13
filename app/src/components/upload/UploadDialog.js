@@ -32,6 +32,8 @@ class UploadDialog extends Component {
         this.renderDropZone = this.renderDropZone.bind(this);
         this.renderMusicInformation = this.renderMusicInformation.bind(this);
         this.renderStepActions = this.renderStepActions.bind(this);
+        this.renderStepper = this.renderStepper.bind(this);
+        this.renderUploadQueue = this.renderUploadQueue.bind(this);
         this.state = {
             finished: false,
             stepIndex: 0
@@ -139,6 +141,45 @@ class UploadDialog extends Component {
         );
     }
 
+    renderStepper() {
+        return (
+            <Stepper activeStep={this.state.stepIndex} orientation="vertical">
+                <Step>
+                    <StepLabel>Choose a music</StepLabel>
+                    <StepContent>
+                        { this.renderDropZone()}
+                        { this.renderStepActions(0)}
+                    </StepContent>
+                </Step>
+                <Step>
+                    <StepLabel>Music Information</StepLabel>
+                    <StepContent>
+                        {this.renderMusicInformation()}
+                        { this.renderStepActions(1)}
+                    </StepContent>
+                </Step>
+                <Step>
+                    <StepLabel>Finish</StepLabel>
+                    <StepContent>
+                        <p>
+                            Try out different ad text to see what brings in the most customers,
+                            and learn how to enhance your ads using features like ad extensions.
+                            If you run into any problems with your ads, find out how to tell if
+                            they're running and how to resolve approval issues.
+                        </p>
+                        { this.renderStepActions(2)}
+                    </StepContent>
+                </Step>
+            </Stepper>
+        )
+    }
+
+    renderUploadQueue() {
+        return (
+            <div> 1 %</div>
+        )
+    }
+
     render() {
         const {onRequest, isOpen} = this.props;
         return (
@@ -153,34 +194,12 @@ class UploadDialog extends Component {
                 onRequestClose={onRequest}
                 autoScrollBodyContent={true}
             >
-                <Stepper activeStep={this.state.stepIndex} orientation="vertical">
-                    <Step>
-                        <StepLabel>Choose a music</StepLabel>
-                        <StepContent>
-                            { this.renderDropZone()}
-                            { this.renderStepActions(0)}
-                        </StepContent>
-                    </Step>
-                    <Step>
-                        <StepLabel>Music Information</StepLabel>
-                        <StepContent>
-                            {this.renderMusicInformation()}
-                            { this.renderStepActions(1)}
-                        </StepContent>
-                    </Step>
-                    <Step>
-                        <StepLabel>Finish</StepLabel>
-                        <StepContent>
-                            <p>
-                                Try out different ad text to see what brings in the most customers,
-                                and learn how to enhance your ads using features like ad extensions.
-                                If you run into any problems with your ads, find out how to tell if
-                                they're running and how to resolve approval issues.
-                            </p>
-                            { this.renderStepActions(2)}
-                        </StepContent>
-                    </Step>
-                </Stepper>
+                <div className="col-md-6">
+                    { this.renderStepper()}
+                </div>
+                <div className="col-md-6">
+                    { this.renderUploadQueue() }
+                </div>
             </Dialog>
         )
     }

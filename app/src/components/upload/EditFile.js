@@ -68,7 +68,7 @@ class EditFile extends Component {
                     <div className="col-md-3">
                         {this.renderImageDropZone()}
                     </div>
-                    <div className="col-md-9">
+                    <div className="col-md-6 col-md-offset-1">
                         <div className="row">
                             <div className="col-xs-4">
                                 Name: {file.name}
