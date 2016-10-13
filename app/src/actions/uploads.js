@@ -25,6 +25,7 @@ export const runUploadQueue = (files) => {
         if (files.length > 0) {
             let formData = new FormData();
             let progress = 0;
+            let setProgress;
             // put all files in queue
             files.map((file, index) => {
                 formData.append('uploads[]', file.data, file.data.name);
@@ -39,8 +40,17 @@ export const runUploadQueue = (files) => {
                 data: formData,
                 processData: false,
                 contentType: false,
+                beforeSend: () => {
+                    progress = 0;
+                },
                 success: (data) => {
                     dispatch(isFileUploading(false));
+                },
+                complete: () => {
+                    // clear interval when its completed
+                    clearInterval(setProgress);
+                    // fill up the progress bar
+                    dispatch(setUploadProgress(100));
                 },
                 xhr: () => {
                     // create an XMLHttpRequest
@@ -61,7 +71,7 @@ export const runUploadQueue = (files) => {
                 }
             });
 
-            setInterval(() => {
+            setProgress = setInterval(() => {
                 dispatch(setUploadProgress(progress));
             }, 1000);
 
