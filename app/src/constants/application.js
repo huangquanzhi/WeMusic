@@ -1,4 +1,4 @@
-export const SONG_PATH = 'http://localhost:3000/song/';
+export const SONG_PATH = 'http://localhost:8081/upload';
 export const UPLOAD_END_POINT = 'http://localhost:3000/';
 export const APPLICATION_SHOW_SETTINGS = 'APPLICATION_SHOW_SETTINGS';
 export const APPLICATION_SHOW_COLOR_PICKER = 'APPLICATION_SHOW_COLOR_PICKER';

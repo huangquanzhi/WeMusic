@@ -33,6 +33,7 @@ class UploadDialog extends Component {
         this.renderMusicInformation = this.renderMusicInformation.bind(this);
         this.renderStepActions = this.renderStepActions.bind(this);
         this.renderStepper = this.renderStepper.bind(this);
+        this.renderUploadProgess = this.renderUploadProgess.bind(this);
         this.renderUploadQueue = this.renderUploadQueue.bind(this);
         this.state = {
             finished: false,
@@ -172,7 +173,7 @@ class UploadDialog extends Component {
         )
     }
 
-    renderUploadQueue() {
+    renderUploadProgess() {
         const {uploads} = this.props;
         return (
             <div className="progress">
@@ -186,6 +187,25 @@ class UploadDialog extends Component {
                 >
                     {uploads.status.progress} %
                 </div>
+            </div>
+        )
+    }
+
+    renderUploadQueue() {
+        const {onRequest} = this.props;
+        return (
+            <div className="file__upload_queue">
+                Hello World
+                {this.renderUploadProgess()}
+
+                <RaisedButton
+                    label="Close"
+                    disableTouchRipple={true}
+                    disableFocusRipple={true}
+                    primary={true}
+                    onTouchTap={onRequest}
+                    style={{marginRight: 12}}
+                />
             </div>
         )
     }

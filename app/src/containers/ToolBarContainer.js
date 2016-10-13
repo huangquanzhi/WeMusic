@@ -71,8 +71,6 @@ class ToolBarContainer extends Component {
         const {uploads, uploadActions} = this.props;
         // start upload
         uploadActions.runUploadQueue(uploads.files);
-        // close dialog
-        this.handleUploadDialogRequest();
     }
 
     // only render when logged in
