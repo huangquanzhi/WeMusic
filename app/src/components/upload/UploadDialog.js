@@ -146,6 +146,10 @@ class UploadDialog extends Component {
                 title="Upload"
                 modal={false}
                 open={isOpen}
+                contentStyle={{
+                    width: '100%',
+                    maxWidth: 'none',
+                }}
                 onRequestClose={onRequest}
                 autoScrollBodyContent={true}
             >

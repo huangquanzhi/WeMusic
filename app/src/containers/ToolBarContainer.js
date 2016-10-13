@@ -66,6 +66,7 @@ class ToolBarContainer extends Component {
         uploadActions.setUploadFiles(files);
     }
 
+    // when final step reached and finished
     handleUploadDialogFinish() {
         const {uploadActions} = this.props;
         uploadActions.isFileUploading(true);

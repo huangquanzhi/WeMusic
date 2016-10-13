@@ -68,9 +68,16 @@ class EditFile extends Component {
                     <div className="col-md-3">
                         {this.renderImageDropZone()}
                     </div>
-                    <div className="col-md-6">
+                    <div className="col-md-9">
                         <div className="row">
-                            File Name: {file.name}
+                            <div className="col-xs-4">
+                                Name: {file.name}
+                            </div>
+                            <div className="col-xs-8">
+                                <IconButton touch={true}>
+                                    <ActionDelete />
+                                </IconButton>
+                            </div>
                         </div>
                         <div className="row">
                             <TextField
@@ -81,15 +88,6 @@ class EditFile extends Component {
                             <TextField
                                 hintText="Author"
                             />
-                        </div>
-                    </div>
-                    <div className="col-md-3">
-                        <div className="row">
-                            <div className="col-md-6 col-md-offset-3">
-                                <IconButton touch={true}>
-                                    <ActionDelete />
-                                </IconButton>
-                            </div>
                         </div>
                     </div>
                 </div>
