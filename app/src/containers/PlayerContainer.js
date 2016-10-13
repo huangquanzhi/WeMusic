@@ -9,7 +9,7 @@ import {
     SONG_PLAY_MODE_REPEAT
 } from '../constants/song';
 
-import Player from '../components/Player';
+import Player from '../components/player/Player';
 import * as songActionCreator from '../actions/song';
 import SongPlayer from '../utils/player';
 

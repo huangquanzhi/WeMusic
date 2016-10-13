@@ -5,15 +5,17 @@ import {connect} from 'react-redux';
 import {withRouter} from 'react-router'
 import {Toolbar, ToolbarGroup, ToolbarSeparator, ToolbarTitle} from 'material-ui/Toolbar';
 import AuthService from '../utils/AuthService'
+
 import * as applicationCreator from '../actions/application';
 import * as userCreator from '../actions/user';
+import * as uploadCreator from '../actions/uploads';
 
 import IconButton from 'material-ui/IconButton';
 import FlatButton from 'material-ui/FlatButton';
 import ActionSettings from 'material-ui/svg-icons/action/settings';
 
 import Settings from '../components/Settings';
-import UploadDialog from '../components/UploadDialog';
+import UploadDialog from '../components/upload/UploadDialog';
 
 
 const propTypes = {
@@ -22,7 +24,9 @@ const propTypes = {
     auth: PropTypes.instanceOf(AuthService),
     title: PropTypes.string,
     user: PropTypes.object,
-    userActions: PropTypes.object
+    userActions: PropTypes.object,
+    uploads: PropTypes.object,
+    uploadActions: PropTypes.object
 };
 
 
@@ -32,10 +36,12 @@ class ToolBarContainer extends Component {
         this.handleSettingsRequest = this.handleSettingsRequest.bind(this);
         this.handleColorPickerRequest = this.handleColorPickerRequest.bind(this);
         this.handleUploadDialogRequest = this.handleUploadDialogRequest.bind(this);
+        this.handleUploadDialogDrop = this.handleUploadDialogDrop.bind(this);
+        this.handleUploadDialogFinish = this.handleUploadDialogFinish.bind(this);
         this.renderLoggedInItems = this.renderLoggedInItems.bind(this);
         this.renderToolbar = this.renderToolbar.bind(this);
         this.state = {
-            showUploadDialog: false,
+            showUploadDialog: false
         }
     }
 
@@ -55,14 +61,27 @@ class ToolBarContainer extends Component {
         })
     }
 
+    handleUploadDialogDrop(files) {
+        const {uploadActions} = this.props;
+        uploadActions.setUploadFiles(files);
+    }
+
+    // when final step reached and finished
+    handleUploadDialogFinish() {
+        const {uploads, uploadActions} = this.props;
+        // start upload
+        uploadActions.runUploadQueue(uploads.files);
+    }
+
+    // only render when logged in
     renderLoggedInItems() {
         const {user} = this.props;
         if (user.loggedIn) {
             return (
-                <ToolbarGroup>
+                <div>
                     <FlatButton label="Upload" onClick={this.handleUploadDialogRequest}/>
-                    <ToolbarSeparator />
-                </ToolbarGroup>
+                    <ToolbarSeparator/>
+                </div>
             )
         }
     }
@@ -80,13 +99,13 @@ class ToolBarContainer extends Component {
                 <ToolbarGroup>
                     <ToolbarTitle text={title}/>
                 </ToolbarGroup>
-                { this.renderLoggedInItems() }
                 <ToolbarGroup
                     lastChild={true}
                     style={{
-                        marginRight: '2%'
+                        marginRight: '1%'
                     }}
                 >
+                    { this.renderLoggedInItems() }
                     <IconButton onClick={this.handleSettingsRequest}>
                         <ActionSettings/>
                     </IconButton>
@@ -106,7 +125,13 @@ class ToolBarContainer extends Component {
                     isOpen={application.settings.isOpen}
                     onChange={this.handleSettingsRequest}
                 />
-                <UploadDialog isOpen={this.state.showUploadDialog} onRequest={this.handleUploadDialogRequest}/>
+                <UploadDialog
+                    {...this.props}
+                    isOpen={this.state.showUploadDialog}
+                    onRequest={this.handleUploadDialogRequest}
+                    onDrop={this.handleUploadDialogDrop}
+                    onFinish={this.handleUploadDialogFinish}
+                />
             </div>
         )
     }
@@ -117,14 +142,16 @@ ToolBarContainer.propTypes = propTypes;
 
 function mapStateToProps(state) {
     return {
-        application: state.application
+        application: state.application,
+        uploads: state.uploads,
     };
 }
 
 function mapDispatchToProps(dispatch) {
     return {
         applicationActions: bindActionCreators(applicationCreator, dispatch),
-        userActions: bindActionCreators(userCreator, dispatch)
+        userActions: bindActionCreators(userCreator, dispatch),
+        uploadActions: bindActionCreators(uploadCreator, dispatch)
     }
 }
 

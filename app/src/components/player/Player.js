@@ -13,12 +13,12 @@ import AVLoop from 'material-ui/svg-icons/av/loop';
 import AVRepeat from 'material-ui/svg-icons/av/repeat';
 import AVShuffle from 'material-ui/svg-icons/av/shuffle';
 import AVQueueMusic from 'material-ui/svg-icons/av/queue-music';
-import {SONG_PATH} from '../constants/application';
+import {SONG_PATH} from '../../constants/application';
 import {
     SONG_PLAY_MODE_LOOP,
     SONG_PLAY_MODE_REPEAT,
     SONG_PLAY_MODE_SHUFFLE
-} from '../constants/song';
+} from '../../constants/song';
 
 import PlayerList from './PlayerList';
 

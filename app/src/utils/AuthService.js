@@ -15,6 +15,7 @@ export default class AuthService extends EventEmitter {
         this.lock.on('authenticated', this._doAuthentication.bind(this));
         // binds login functions to keep this context
         this.login = this.login.bind(this);
+        this.logout = this.logout.bind(this);
         this.setAuthenticatedActions = this.setAuthenticatedActions.bind(this);
 
         // actions for reducers

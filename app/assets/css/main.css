@@ -27,7 +27,7 @@ main {
 }
 
 .home__album {
-    background:linear-gradient(#eb01a5, #d13531) no-repeat center center fixed;
+    background: linear-gradient(#eb01a5, #d13531) no-repeat center center fixed;
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
@@ -54,4 +54,47 @@ main {
 
 .home__album__cover img:hover {
     zoom: 100%;
+}
+
+/* ==================
+       DROP ZONE
+================ */
+
+.file__drop {
+    font-size: 1.25rem;
+    background-color: #c8dadf;
+    position: relative;
+    padding: 4px 2px;
+    -webkit-transition: background-color .15s linear;
+    -moz-transition: background-color .15s linear;
+    -ms-transition: background-color .15s linear;
+    -o-transition: background-color .15s linear;
+    transition: background-color .15s linear;
+}
+
+.file__drop:hover {
+    background-color: whitesmoke;
+}
+
+.file__drop-zone {
+    text-align: center;
+    outline: 2px dashed #92b0b3;
+
+    -webkit-transition: outline-offset .15s ease-in-out;
+    transition: outline-offset .15s ease-in-out;
+}
+
+.file__drop-zone:hover {
+    cursor: pointer;
+    outline-offset: -13px;
+}
+
+.file__drop-zone_small {
+    padding: 10px 5px;
+    outline-offset: -5px;
+}
+
+.file__drop-zone_large {
+    padding: 60px 20px;
+    outline-offset: -10px;
 }
