@@ -15,7 +15,7 @@ import FlatButton from 'material-ui/FlatButton';
 import ActionSettings from 'material-ui/svg-icons/action/settings';
 
 import Settings from '../components/Settings';
-import UploadDialog from '../components/UploadDialog';
+import UploadDialog from '../components/upload/UploadDialog';
 
 
 const propTypes = {
