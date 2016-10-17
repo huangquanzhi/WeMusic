@@ -21,8 +21,12 @@ export const setUploadProgress = (value) => {
     return {type: FILE_UPLOAD_PROGRESS, value};
 };
 
-export const runUploadQueue = (files) => {
-    return (dispatch) => {
+export const runUploadQueue = () => {
+    return (dispatch, getState) => {
+
+        const {uploads} = getState();
+        const files = uploads.files;
+
         if (files.length > 0) {
             let formData = new FormData();
             let progress = 0;

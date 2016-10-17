@@ -72,11 +72,15 @@ class UploadDialog extends Component {
                 break;
             case 2:
                 // final step
-                this.setState({
-                    stepIndex: 0
-                });
-                // on finish clicked
-                onFinish();
+
+                // if file is NOT uploading
+                if (!uploads.status.uploading) {
+                    this.setState({
+                        stepIndex: 0
+                    });
+                    // on finish clicked
+                    onFinish();
+                }
                 break;
         }
 

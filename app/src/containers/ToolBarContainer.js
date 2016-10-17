@@ -68,9 +68,9 @@ class ToolBarContainer extends Component {
 
     // when final step reached and finished
     handleUploadDialogFinish() {
-        const {uploads, uploadActions} = this.props;
+        const {uploadActions} = this.props;
         // start upload
-        uploadActions.runUploadQueue(uploads.files);
+        uploadActions.runUploadQueue();
         // clear upload after its been loaded to queue
         uploadActions.clearUploads();
     }
