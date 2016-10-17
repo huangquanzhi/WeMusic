@@ -6,6 +6,8 @@ import {
     FILE_EDIT_MUSIC_NAME,
     FILE_EDIT_MUSIC_AUTHOR,
     FILE_UPLOAD_PROGRESS,
+    FILE_CLEAR_FILES,
+    FILE_REMOVE_FILE,
 } from '../constants/uploads';
 
 import {
@@ -20,14 +22,22 @@ export const setUploadProgress = (value) => {
     return {type: FILE_UPLOAD_PROGRESS, value};
 };
 
-export const runUploadQueue = (files) => {
-    return (dispatch) => {
-        if (files.length > 0) {
-            var formData = new FormData();
+export const runUploadQueue = () => {
+    return (dispatch, getState) => {
 
+        const {uploads, user} = getState();
+        const files = uploads.files;
+
+        if (files.length > 0) {
+            let formData = new FormData();
+            let progress = 0;
+            let setProgress;
             // put all files in queue
             files.map((file, index) => {
                 formData.append('uploads[]', file.data, file.data.name);
+                formData.append('covers[]', file.cover);
+                formData.append('names[]', file.name);
+                formData.append('authors[]', file.author);
             });
 
             // start the upload
@@ -39,12 +49,24 @@ export const runUploadQueue = (files) => {
                 data: formData,
                 processData: false,
                 contentType: false,
+                headers: {
+                    "Authorization": "bearer " + user.idToken
+                },
+                beforeSend: (xhr) => {
+                    progress = 0;
+                },
                 success: (data) => {
                     dispatch(isFileUploading(false));
                 },
+                complete: () => {
+                    // clear interval when its completed
+                    clearInterval(setProgress);
+                    // fill up the progress bar
+                    dispatch(setUploadProgress(100));
+                },
                 xhr: () => {
                     // create an XMLHttpRequest
-                    var xhr = new XMLHttpRequest();
+                    let xhr = new XMLHttpRequest();
                     // listen to the 'progress' event
                     xhr.upload.addEventListener('progress', function (evt) {
 
@@ -52,13 +74,21 @@ export const runUploadQueue = (files) => {
                             let percentComplete = evt.loaded / evt.total;
                             percentComplete = parseInt(percentComplete * 100);
                             // update progress bar
-                            dispatch(setUploadProgress(percentComplete));
+                            progress = percentComplete;
+
                         }
                     }, false);
 
                     return xhr;
                 }
             });
+
+
+            // update progress bar every 1 second
+            setProgress = setInterval(() => {
+                dispatch(setUploadProgress(progress));
+            }, 1000);
+
         }
     }
 };
@@ -68,15 +98,17 @@ export const setUploadFiles = (files) => {
 
     let fileArray = [];
 
-    // create new object
-    files.map((file) => {
-        fileArray.push({
-            data: file,
-            cover: null,
-            name: '',
-            author: ''
-        })
-    });
+    // create new object in array if files being pass is not null
+    if (Array.isArray(files) && files != undefined) {
+        files.map((file) => {
+            fileArray.push({
+                data: file,
+                cover: null,
+                name: '',
+                author: ''
+            })
+        });
+    }
 
     return {type: FILE_SET_FILES, files: fileArray};
 };
@@ -95,4 +127,12 @@ export const editUploadName = (index, name) => {
 
 export const editUploadAuthor = (index, author) => {
     return {type: FILE_EDIT_MUSIC_AUTHOR, index, author};
+};
+
+export const clearUploads = () => {
+    return {type: FILE_CLEAR_FILES};
+};
+
+export const removeFile = (index) => {
+    return {type: FILE_REMOVE_FILE, index};
 };

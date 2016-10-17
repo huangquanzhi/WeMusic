@@ -412,7 +412,7 @@ class Player extends Component {
             return (
                 <audio
                     id="audioPlayer"
-                    src={SONG_PATH + loadedSong.file}
+                    src={SONG_PATH + "/" + loadedSong.file}
                 />
             )
         }

@@ -6,6 +6,8 @@ import {
     FILE_EDIT_MUSIC_NAME,
     FILE_EDIT_MUSIC_AUTHOR,
     FILE_UPLOAD_PROGRESS,
+    FILE_CLEAR_FILES,
+    FILE_REMOVE_FILE,
 } from '../constants/uploads';
 
 
@@ -47,6 +49,15 @@ const uploads = (state = initialState, action) => {
         case FILE_SET_FILES:
             return Object.assign({}, state, {
                 files: [...state.files, ...action.files]
+            });
+        case FILE_REMOVE_FILE:
+            return Object.assign({}, state, {
+                files: [...state.files.slice(0, action.index),
+                    ...state.files.slice(action.index + 1)]
+            });
+        case FILE_CLEAR_FILES:
+            return Object.assign({}, state, {
+                files: []
             });
         case FILE_SET_COVERS:
             return Object.assign({}, state, {

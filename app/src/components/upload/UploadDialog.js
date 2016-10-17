@@ -7,6 +7,8 @@ import {
     StepContent,
 } from 'material-ui/Stepper';
 
+import _ from 'lodash';
+
 import RaisedButton from 'material-ui/RaisedButton';
 import FlatButton from 'material-ui/FlatButton';
 import FileUpload from 'material-ui/svg-icons/file/file-upload';
@@ -35,34 +37,70 @@ class UploadDialog extends Component {
         this.renderStepper = this.renderStepper.bind(this);
         this.renderUploadProgess = this.renderUploadProgess.bind(this);
         this.renderUploadQueue = this.renderUploadQueue.bind(this);
+        this.renderUploadInformation = this.renderUploadInformation.bind(this);
         this.state = {
-            finished: false,
-            stepIndex: 0
+            stepIndex: 0,
+            totalMB: 0,
         }
     }
 
     handleNextStep() {
         const {stepIndex} = this.state;
         const {uploads, onFinish} = this.props;
-        // if final step
-        if (stepIndex >= 2) {
-            this.setState({
-                stepIndex: 0,
-                finished: false
-            });
 
-            // on finish clicked
-            onFinish();
-        } else {
-            // not final step yet
+        // step index
+        switch (stepIndex) {
+            case 0:
+                // more than 1 file,  ready to go to next
+                if (uploads.files.length > 0) {
+                    this.setState({
+                        stepIndex: stepIndex + 1
+                    });
+                }
+                break;
+            case 1:
+                // edit music information step
 
-            // more than 1 file,  ready to go to next
-            if (uploads.files.length > 0) {
-                this.setState({
-                    stepIndex: stepIndex + 1,
-                    finished: stepIndex >= 2,
+                // true if something is required to fill
+                const isRequired = _.some(uploads.files, (o) => {
+                    return o.name == "" || o.author == "";
                 });
-            }
+
+                if (!isRequired) {
+
+                    // calculate total size
+                    let totalSize = 0;
+
+                    // adding all file size
+                    uploads.files.map((file) => {
+                        totalSize += file.data.size;
+                        if (file.cover != null) {
+                            totalSize += file.cover.size;
+                        }
+                    });
+
+                    // rounding
+                    totalSize = Math.round(((totalSize / 1024) / 1024) * 100) / 100;
+
+                    // store total size in state
+                    this.setState({
+                        totalMB: totalSize,
+                        stepIndex: stepIndex + 1
+                    });
+                }
+                break;
+            case 2:
+                // final step
+
+                // if file is NOT uploading
+                if (!uploads.status.uploading) {
+                    this.setState({
+                        stepIndex: 0
+                    });
+                    // on finish clicked
+                    onFinish();
+                }
+                break;
         }
 
     }
@@ -112,6 +150,21 @@ class UploadDialog extends Component {
         )
     }
 
+    renderUploadInformation() {
+        const {uploads} = this.props;
+
+        return (
+            <div className="upload__informations">
+                <div className="col-md-6">
+                    <b>Total Files</b> : {uploads.files.length}
+                </div>
+                <div className="col-md-6">
+                    <b>Total Size</b> : {this.state.totalMB} MB
+                </div>
+            </div>
+        )
+    }
+
     renderStepActions(step) {
         const {stepIndex} = this.state;
         const {uploads}= this.props;
@@ -128,10 +181,10 @@ class UploadDialog extends Component {
                     />
                 )}
                 <RaisedButton
-                    label={stepIndex === 2 ? 'Finish' : 'Next'}
+                    label={stepIndex === 2 ? 'Upload' : 'Next'}
                     disableTouchRipple={true}
                     disableFocusRipple={true}
-                    disabled={(uploads.files.length < 1)}
+                    disabled={(uploads.files.length < 1) || uploads.status.uploading}
                     primary={true}
                     onTouchTap={this.handleNextStep}
                     style={{marginRight: 12}}
@@ -153,19 +206,14 @@ class UploadDialog extends Component {
                 <Step>
                     <StepLabel>Music Information</StepLabel>
                     <StepContent>
-                        {this.renderMusicInformation()}
+                        { this.renderMusicInformation()}
                         { this.renderStepActions(1)}
                     </StepContent>
                 </Step>
                 <Step>
-                    <StepLabel>Finish</StepLabel>
+                    <StepLabel>Final</StepLabel>
                     <StepContent>
-                        <p>
-                            Try out different ad text to see what brings in the most customers,
-                            and learn how to enhance your ads using features like ad extensions.
-                            If you run into any problems with your ads, find out how to tell if
-                            they're running and how to resolve approval issues.
-                        </p>
+                        { this.renderUploadInformation()}
                         { this.renderStepActions(2)}
                     </StepContent>
                 </Step>
@@ -174,38 +222,56 @@ class UploadDialog extends Component {
     }
 
     renderUploadProgess() {
-        const {uploads} = this.props;
+        const {progress} = this.props.uploads.status;
+
         return (
             <div className="progress">
                 <div
                     className="progress-bar progress-bar-striped active"
                     role="progressbar"
-                    aria-valuenow={uploads.status.progress}
+                    aria-valuenow={progress}
                     aria-valuemin="0"
                     aria-valuemax="100"
-                    style={ {width: uploads.status.progress + "%"}}
+                    style={ {width: progress + "%"}}
                 >
-                    {uploads.status.progress} %
+                    {progress} %
                 </div>
             </div>
         )
     }
 
     renderUploadQueue() {
-        const {onRequest} = this.props;
+        const {onRequest, uploads} = this.props;
+        const {totalMB} = this.state;
+
+        const currentMB = Math.round((totalMB * (uploads.status.progress / 100)) * 100) / 100;
+
         return (
             <div className="file__upload_queue">
-                Hello World
-                {this.renderUploadProgess()}
-
-                <RaisedButton
-                    label="Close"
-                    disableTouchRipple={true}
-                    disableFocusRipple={true}
-                    primary={true}
-                    onTouchTap={onRequest}
-                    style={{marginRight: 12}}
-                />
+                <div className="row">
+                    <div className="col-md-6 col-md-offset-4">
+                        <h3>Upload Status</h3>
+                    </div>
+                </div>
+                <div className="row">
+                    {this.renderUploadProgess()}
+                </div>
+                <div className="row">
+                    <div className="col-md-5 col-md-offset-7">
+                        <p>Current: {currentMB} MB - Total: {totalMB} MB</p>
+                    </div>
+                </div>
+                <div className="row">
+                    <RaisedButton
+                        label="Close"
+                        disableTouchRipple={true}
+                        disableFocusRipple={true}
+                        fullWidth={true}
+                        primary={true}
+                        onTouchTap={onRequest}
+                        style={{marginRight: 12}}
+                    />
+                </div>
             </div>
         )
     }
