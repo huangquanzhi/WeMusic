@@ -39,7 +39,8 @@ class UploadDialog extends Component {
         this.renderUploadQueue = this.renderUploadQueue.bind(this);
         this.renderUploadInformation = this.renderUploadInformation.bind(this);
         this.state = {
-            stepIndex: 0
+            stepIndex: 0,
+            totalMB: 0,
         }
     }
 
@@ -66,7 +67,24 @@ class UploadDialog extends Component {
                 });
 
                 if (!isRequired) {
+
+                    // calculate total size
+                    let totalSize = 0;
+
+                    // adding all file size
+                    uploads.files.map((file) => {
+                        totalSize += file.data.size;
+                        if (file.cover != null) {
+                            totalSize += file.cover.size;
+                        }
+                    });
+
+                    // rounding
+                    totalSize = Math.round(((totalSize / 1024) / 1024) * 100) / 100;
+
+                    // store total size in state
                     this.setState({
+                        totalMB: totalSize,
                         stepIndex: stepIndex + 1
                     });
                 }
@@ -135,26 +153,13 @@ class UploadDialog extends Component {
     renderUploadInformation() {
         const {uploads} = this.props;
 
-        let totalSize = 0;
-
-        // adding all file size
-        uploads.files.map((file) => {
-            totalSize += file.data.size;
-            if (file.cover != null) {
-                totalSize += file.cover.size;
-            }
-        });
-
-        // rounding
-        totalSize = Math.round(((totalSize / 1024) / 1024) * 100) / 100;
-
         return (
             <div className="upload__informations">
                 <div className="col-md-6">
                     <b>Total Files</b> : {uploads.files.length}
                 </div>
                 <div className="col-md-6">
-                    <b>Total Size</b> : {totalSize} MB
+                    <b>Total Size</b> : {this.state.totalMB} MB
                 </div>
             </div>
         )
@@ -217,39 +222,56 @@ class UploadDialog extends Component {
     }
 
     renderUploadProgess() {
-        const {uploads} = this.props;
+        const {progress} = this.props.uploads.status;
 
         return (
             <div className="progress">
                 <div
                     className="progress-bar progress-bar-striped active"
                     role="progressbar"
-                    aria-valuenow={uploads.status.progress}
+                    aria-valuenow={progress}
                     aria-valuemin="0"
                     aria-valuemax="100"
-                    style={ {width: uploads.status.progress + "%"}}
+                    style={ {width: progress + "%"}}
                 >
-                    {uploads.status.progress} %
+                    {progress} %
                 </div>
             </div>
         )
     }
 
     renderUploadQueue() {
-        const {onRequest} = this.props;
+        const {onRequest, uploads} = this.props;
+        const {totalMB} = this.state;
+
+        const currentMB = Math.round((totalMB * (uploads.status.progress / 100)) * 100) / 100;
+
         return (
             <div className="file__upload_queue">
-                Hello World
-                {this.renderUploadProgess()}
-
-                <RaisedButton
-                    label="Close"
-                    disableTouchRipple={true}
-                    disableFocusRipple={true}
-                    primary={true}
-                    onTouchTap={onRequest}
-                    style={{marginRight: 12}}
-                />
+                <div className="row">
+                    <div className="col-md-6 col-md-offset-4">
+                        <h3>Upload Status</h3>
+                    </div>
+                </div>
+                <div className="row">
+                    {this.renderUploadProgess()}
+                </div>
+                <div className="row">
+                    <div className="col-md-5 col-md-offset-7">
+                        <p>Current: {currentMB} MB - Total: {totalMB} MB</p>
+                    </div>
+                </div>
+                <div className="row">
+                    <RaisedButton
+                        label="Close"
+                        disableTouchRipple={true}
+                        disableFocusRipple={true}
+                        fullWidth={true}
+                        primary={true}
+                        onTouchTap={onRequest}
+                        style={{marginRight: 12}}
+                    />
+                </div>
             </div>
         )
     }
