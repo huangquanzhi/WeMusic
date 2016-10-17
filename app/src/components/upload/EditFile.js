@@ -96,6 +96,7 @@ class EditFile extends Component {
                                 floatingLabelText="Music Name"
                                 floatingLabelFixed={true}
                                 value={file.name}
+                                errorText={file.name == "" ? "Required" : ""}
                                 onChange={this.handleEditName}
                             />
                         </div>
@@ -104,6 +105,7 @@ class EditFile extends Component {
                                 floatingLabelText="Author"
                                 floatingLabelFixed={true}
                                 value={file.author}
+                                errorText={file.author == "" ? "Required" : ""}
                                 onChange={this.handleEditAuthor}
                             />
                         </div>
