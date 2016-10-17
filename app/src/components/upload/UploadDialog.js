@@ -7,6 +7,8 @@ import {
     StepContent,
 } from 'material-ui/Stepper';
 
+import _ from 'lodash';
+
 import RaisedButton from 'material-ui/RaisedButton';
 import FlatButton from 'material-ui/FlatButton';
 import FileUpload from 'material-ui/svg-icons/file/file-upload';
@@ -36,7 +38,6 @@ class UploadDialog extends Component {
         this.renderUploadProgess = this.renderUploadProgess.bind(this);
         this.renderUploadQueue = this.renderUploadQueue.bind(this);
         this.state = {
-            finished: false,
             stepIndex: 0
         }
     }
@@ -45,24 +46,40 @@ class UploadDialog extends Component {
         const {stepIndex} = this.state;
         const {uploads, onFinish} = this.props;
         // if final step
-        if (stepIndex >= 2) {
-            this.setState({
-                stepIndex: 0,
-                finished: false
-            });
 
-            // on finish clicked
-            onFinish();
-        } else {
-            // not final step yet
+        // step index
+        switch (stepIndex) {
+            case 0:
+                // more than 1 file,  ready to go to next
+                if (uploads.files.length > 0) {
+                    this.setState({
+                        stepIndex: stepIndex + 1
+                    });
+                }
+                break;
+            case 1:
+                // edit music information step
+                // true if something is required to fill
 
-            // more than 1 file,  ready to go to next
-            if (uploads.files.length > 0) {
-                this.setState({
-                    stepIndex: stepIndex + 1,
-                    finished: stepIndex >= 2,
+                const isRequired = _.some(uploads.files, (o) => {
+                    return o.name == "" || o.author == "";
                 });
-            }
+
+                console.log(isRequired)
+                if (!isRequired) {
+                    this.setState({
+                        stepIndex: stepIndex + 1
+                    });
+                }
+                break;
+            case 2:
+                // final step
+                this.setState({
+                    stepIndex: 0
+                });
+                // on finish clicked
+                onFinish();
+                break;
         }
 
     }
