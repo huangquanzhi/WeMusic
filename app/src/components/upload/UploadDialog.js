@@ -150,7 +150,7 @@ class UploadDialog extends Component {
                     label={stepIndex === 2 ? 'Finish' : 'Next'}
                     disableTouchRipple={true}
                     disableFocusRipple={true}
-                    disabled={(uploads.files.length < 1)}
+                    disabled={(uploads.files.length < 1) || uploads.status.uploading}
                     primary={true}
                     onTouchTap={this.handleNextStep}
                     style={{marginRight: 12}}

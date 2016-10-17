@@ -7,6 +7,7 @@ import {
     FILE_EDIT_MUSIC_AUTHOR,
     FILE_UPLOAD_PROGRESS,
     FILE_CLEAR_FILES,
+    FILE_REMOVE_FILE,
 } from '../constants/uploads';
 
 import {
@@ -124,4 +125,8 @@ export const editUploadAuthor = (index, author) => {
 
 export const clearUploads = () => {
     return {type: FILE_CLEAR_FILES};
+};
+
+export const removeFile = (index) => {
+    return {type: FILE_REMOVE_FILE, index};
 };

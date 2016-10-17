@@ -30,6 +30,9 @@ class EditFileList extends Component {
                     authorEdit={(author) => {
                         uploadActions.editUploadAuthor(index, author);
                     }}
+                    fileRemove={() => {
+                        uploadActions.removeFile(index);
+                    }}
                 />
             )
         })

@@ -10,6 +10,7 @@ const propTypes = {
     coverUpload: PropTypes.func,
     nameEdit: PropTypes.func,
     authorEdit: PropTypes.func,
+    fileRemove: PropTypes.func,
 };
 
 
@@ -73,7 +74,7 @@ class EditFile extends Component {
     }
 
     render() {
-        const {file} = this.props;
+        const {file, fileRemove} = this.props;
         return (
             <li className="edit-file__item list-group-item">
                 <div className="row">
@@ -86,8 +87,8 @@ class EditFile extends Component {
                                 Name: {file.data.name}
                             </div>
                             <div className="col-xs-8">
-                                <IconButton touch={true}>
-                                    <ActionDelete />
+                                <IconButton touch={true} onClick={fileRemove}>
+                                    <ActionDelete/>
                                 </IconButton>
                             </div>
                         </div>
