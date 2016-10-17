@@ -25,7 +25,7 @@ export const setUploadProgress = (value) => {
 export const runUploadQueue = () => {
     return (dispatch, getState) => {
 
-        const {uploads} = getState();
+        const {uploads, user} = getState();
         const files = uploads.files;
 
         if (files.length > 0) {
@@ -49,7 +49,10 @@ export const runUploadQueue = () => {
                 data: formData,
                 processData: false,
                 contentType: false,
-                beforeSend: () => {
+                headers: {
+                    "Authorization": "bearer " + user.idToken
+                },
+                beforeSend: (xhr) => {
                     progress = 0;
                 },
                 success: (data) => {
