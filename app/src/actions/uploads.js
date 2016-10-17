@@ -6,6 +6,7 @@ import {
     FILE_EDIT_MUSIC_NAME,
     FILE_EDIT_MUSIC_AUTHOR,
     FILE_UPLOAD_PROGRESS,
+    FILE_CLEAR_FILES,
 } from '../constants/uploads';
 
 import {
@@ -71,8 +72,9 @@ export const runUploadQueue = (files) => {
                 }
             });
 
+
+            // update progress bar every 1 second
             setProgress = setInterval(() => {
-                console.log("update")
                 dispatch(setUploadProgress(progress));
             }, 1000);
 
@@ -117,8 +119,5 @@ export const editUploadAuthor = (index, author) => {
 };
 
 export const clearUploads = () => {
-    return (dispatch) => {
-        // clear upload files
-        dispatch(setUploadFiles());
-    }
+    return {type: FILE_CLEAR_FILES};
 };
