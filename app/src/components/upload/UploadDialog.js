@@ -37,6 +37,7 @@ class UploadDialog extends Component {
         this.renderStepper = this.renderStepper.bind(this);
         this.renderUploadProgess = this.renderUploadProgess.bind(this);
         this.renderUploadQueue = this.renderUploadQueue.bind(this);
+        this.renderUploadInformation = this.renderUploadInformation.bind(this);
         this.state = {
             stepIndex: 0
         }
@@ -131,6 +132,34 @@ class UploadDialog extends Component {
         )
     }
 
+    renderUploadInformation() {
+        const {uploads} = this.props;
+
+        let totalSize = 0;
+
+        // adding all file size
+        uploads.files.map((file) => {
+            totalSize += file.data.size;
+            if (file.cover != null) {
+                totalSize += file.cover.size;
+            }
+        });
+
+        // rounding
+        totalSize = Math.round(((totalSize / 1024) / 1024) * 100) / 100;
+
+        return (
+            <div className="upload__informations">
+                <div className="col-md-6">
+                    <b>Total Files</b> : {uploads.files.length}
+                </div>
+                <div className="col-md-6">
+                    <b>Total Size</b> : {totalSize} MB
+                </div>
+            </div>
+        )
+    }
+
     renderStepActions(step) {
         const {stepIndex} = this.state;
         const {uploads}= this.props;
@@ -147,7 +176,7 @@ class UploadDialog extends Component {
                     />
                 )}
                 <RaisedButton
-                    label={stepIndex === 2 ? 'Finish' : 'Next'}
+                    label={stepIndex === 2 ? 'Upload' : 'Next'}
                     disableTouchRipple={true}
                     disableFocusRipple={true}
                     disabled={(uploads.files.length < 1) || uploads.status.uploading}
@@ -172,19 +201,14 @@ class UploadDialog extends Component {
                 <Step>
                     <StepLabel>Music Information</StepLabel>
                     <StepContent>
-                        {this.renderMusicInformation()}
+                        { this.renderMusicInformation()}
                         { this.renderStepActions(1)}
                     </StepContent>
                 </Step>
                 <Step>
-                    <StepLabel>Finish</StepLabel>
+                    <StepLabel>Final</StepLabel>
                     <StepContent>
-                        <p>
-                            Try out different ad text to see what brings in the most customers,
-                            and learn how to enhance your ads using features like ad extensions.
-                            If you run into any problems with your ads, find out how to tell if
-                            they're running and how to resolve approval issues.
-                        </p>
+                        { this.renderUploadInformation()}
                         { this.renderStepActions(2)}
                     </StepContent>
                 </Step>
