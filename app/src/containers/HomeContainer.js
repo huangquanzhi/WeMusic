@@ -33,7 +33,7 @@ class HomeContainer extends Component {
             if (prevProps.songPlaying !== this.props.song.songPlaying) {
                 const songObj = this.retrievePlayingSong();
                 // get the cover image url
-                const url = SONG_PATH + songObj.cover;
+                const url = SONG_PATH + "/" + songObj.cover;
                 document.getElementsByClassName("home__album")[0].style.backgroundImage = "url('" + url + "')";
             }
         }
@@ -61,7 +61,7 @@ class HomeContainer extends Component {
 
         if (song.songPlaying) {
             const songObj = this.retrievePlayingSong();
-            url = SONG_PATH + songObj.cover;
+            url = SONG_PATH + "/" + songObj.cover;
 
         }
         return url;
