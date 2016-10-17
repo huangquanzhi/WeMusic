@@ -45,7 +45,6 @@ class UploadDialog extends Component {
     handleNextStep() {
         const {stepIndex} = this.state;
         const {uploads, onFinish} = this.props;
-        // if final step
 
         // step index
         switch (stepIndex) {
@@ -59,13 +58,12 @@ class UploadDialog extends Component {
                 break;
             case 1:
                 // edit music information step
-                // true if something is required to fill
 
+                // true if something is required to fill
                 const isRequired = _.some(uploads.files, (o) => {
                     return o.name == "" || o.author == "";
                 });
 
-                console.log(isRequired)
                 if (!isRequired) {
                     this.setState({
                         stepIndex: stepIndex + 1

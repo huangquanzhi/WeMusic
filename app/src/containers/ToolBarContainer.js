@@ -71,6 +71,8 @@ class ToolBarContainer extends Component {
         const {uploads, uploadActions} = this.props;
         // start upload
         uploadActions.runUploadQueue(uploads.files);
+        // clear upload after its been loaded to queue
+        uploadActions.clearUploads();
     }
 
     // only render when logged in

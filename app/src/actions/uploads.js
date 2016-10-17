@@ -72,6 +72,7 @@ export const runUploadQueue = (files) => {
             });
 
             setProgress = setInterval(() => {
+                console.log("update")
                 dispatch(setUploadProgress(progress));
             }, 1000);
 
@@ -84,15 +85,17 @@ export const setUploadFiles = (files) => {
 
     let fileArray = [];
 
-    // create new object
-    files.map((file) => {
-        fileArray.push({
-            data: file,
-            cover: null,
-            name: '',
-            author: ''
-        })
-    });
+    // create new object in array if files being pass is not null
+    if (Array.isArray(files) && files != undefined) {
+        files.map((file) => {
+            fileArray.push({
+                data: file,
+                cover: null,
+                name: '',
+                author: ''
+            })
+        });
+    }
 
     return {type: FILE_SET_FILES, files: fileArray};
 };
@@ -111,4 +114,11 @@ export const editUploadName = (index, name) => {
 
 export const editUploadAuthor = (index, author) => {
     return {type: FILE_EDIT_MUSIC_AUTHOR, index, author};
+};
+
+export const clearUploads = () => {
+    return (dispatch) => {
+        // clear upload files
+        dispatch(setUploadFiles());
+    }
 };
