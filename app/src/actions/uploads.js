@@ -35,6 +35,9 @@ export const runUploadQueue = () => {
             // put all files in queue
             files.map((file, index) => {
                 formData.append('uploads[]', file.data, file.data.name);
+                formData.append('covers[]', file.cover);
+                formData.append('names[]', file.name);
+                formData.append('authors[]', file.author);
             });
 
             // start the upload
