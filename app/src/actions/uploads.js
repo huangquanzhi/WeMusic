@@ -56,11 +56,12 @@ export const runUploadQueue = () => {
                     progress = 0;
                 },
                 success: (data) => {
-                    dispatch(isFileUploading(false));
                 },
                 complete: () => {
                     // clear interval when its completed
                     clearInterval(setProgress);
+                    // set upload status
+                    dispatch(isFileUploading(false));
                     // fill up the progress bar
                     dispatch(setUploadProgress(100));
                 },
