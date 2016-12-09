@@ -16,7 +16,7 @@ var uglify = require('gulp-uglify');
 //CL EX: NODE_ENV=production gulp dev
 
 var destRoot = webpackConfig.destRoot;
-var destAssetFolder = webpackConfig.destAssetFolder; //destRoot + '/deloitte/assets';
+var destAssetFolder = webpackConfig.destAssetFolder;
 
 
 gulp.task('copy', function() {
