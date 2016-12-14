@@ -1,6 +1,6 @@
 # WeMusic
 
-<h1>Beta work in progress</h1>
+<h1>CURRENTLY IN DEVELOPMENT</h1>
 
 <ol>
 <li>npm install</li>
